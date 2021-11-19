@@ -1,6 +1,8 @@
 " set MYVIMRC path
 let $MYVIMRC="~/.vim/.vimrc"
 
+set nocompatible
+
 " Enable the mouse
 set mouse=a
 
