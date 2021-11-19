@@ -1,5 +1,5 @@
 " set MYVIMRC path
-let $MYVIMRC="~/.vim/.vimrc"
+let $MYVIMRC="~/.vim/vimrc"
 
 set nocompatible
 
