@@ -1,0 +1,24 @@
+" set MYVIMRC path
+let $MYVIMRC="~/.vim/vimrc"
+
+set nocompatible
+
+set mouse=a
+
+set incsearch
+
+set hlsearch
+
+set nu rnu
+
+set visualbell t_vb=
+
+nnoremap <silent> <C-l> :nohl<CR><C-l>
+
+let s:clip = '/mnt/c/Windows/System32/clip.exe'
+if executable(s:clip)
+	augroup WSLYank
+		autocmd!
+		autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+	augroup END
+endif
