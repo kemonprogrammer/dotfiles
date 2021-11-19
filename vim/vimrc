@@ -16,7 +16,7 @@ set hlsearch
 set nu rnu
 
 " Use visual bell, instead of beeping when doing something wrong
-set visualbell
+" set visualbell
 
 " This should unhighlight searches, after done searching
 nnoremap <silent> <C-l> :nohl<CR><C-l>
