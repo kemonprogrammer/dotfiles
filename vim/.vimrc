@@ -9,3 +9,6 @@ set incsearch
 
 " highlight while searching
 set hlsearch
+
+" hybrid numbers
+set nu rnu
