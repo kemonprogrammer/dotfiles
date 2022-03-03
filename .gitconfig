@@ -1,0 +1,6 @@
+[user]
+	name = Michael Luu
+	email = 67599521+kemonprogrammer@users.noreply.github.com
+[core]
+	editor = vim
+	autocrlf = input
