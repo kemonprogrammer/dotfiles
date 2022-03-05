@@ -1,5 +1,5 @@
 [submodule "vim/pack/tpope/start/vim-surround"]
-	path = vim/pack/tpope/start/vim-surround
+	path = vim/pack/vendor/start/vim-surround
 	url = https://github.com/tpope/vim-surround
 [submodule "dotbot"]
 	path = dotbot
