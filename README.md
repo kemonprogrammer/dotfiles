@@ -8,6 +8,8 @@
 
 ## Custom programs
 - up
+	- have up be included in the install script, 
+	so that I have it on every system
 - lsd (modern ls)
 
 ## CLI Programs

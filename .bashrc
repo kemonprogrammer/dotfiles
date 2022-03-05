@@ -126,3 +126,12 @@ mcd () {
 }
 
 source ~/.config/up/up.sh
+
+# Use local bashrc if created
+if [ -f ~/.bashrc_local ]; then
+	source ~/.bashrc_local
+fi
+
+
+
+
