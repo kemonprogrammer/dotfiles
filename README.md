@@ -3,7 +3,8 @@
 
 # Notes
 ## Fonts
-- FiraMono
+- ~~FiraMono~~
+- something more like Consolas
 
 ## Custom programs
 - up
