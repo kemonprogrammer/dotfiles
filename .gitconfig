@@ -12,3 +12,11 @@
 	unstage = reset HEAD --
 	last = log -1 HEAD
 	ca = commit -a
+	open = !gh browse
+	gr = log --oneline --graph
+	ps = push
+	pl = pull
+	d = diff
+	a = add
+	br = branch
+	ba = branch -a
