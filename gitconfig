@@ -20,3 +20,4 @@
 	ca = commit -a
 	open = !gh browse
 	root = rev-parse --show-toplevel
+	smu = submodule foreach git pull origin master
