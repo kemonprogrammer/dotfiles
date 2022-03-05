@@ -4,3 +4,10 @@
 [core]
 	editor = vim
 	autocrlf = input
+[alias]
+	st = status
+	root = rev-parse --show-toplevel
+	ci = commit
+	co = checkout
+	unstage = reset HEAD --
+	last = log -1 HEAD
