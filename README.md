@@ -7,6 +7,8 @@
 - something more like Consolas
 
 ## Custom programs
+- mcd
+	- [ ] TODO allow mkdir -p and then cd
 - up
 	- have up be included in the install script, 
 	so that I have it on every system

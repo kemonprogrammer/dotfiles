@@ -29,3 +29,8 @@ if executable(s:clip)
 		autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
 	augroup END
 endif
+
+" local config
+if filereadable($HOME . "/.vimrc.local")
+	source ~/.vimrc.local
+endif
