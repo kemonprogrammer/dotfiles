@@ -7,18 +7,20 @@
 [alias]
 	a = add
 	d = diff
-	br = branch
-	ba = branch -a
 	st = status
-	co = commit
+	c = commit
+	ca = commit -a
 	ch = checkout
-	gr = log --oneline --graph
 	ps = push
 	pl = pull
+	br = branch
+	ba = branch -a
+	bd = branch -d
+	bD = branch -D
+	gr = log --oneline --graph
 	unstage = reset HEAD --
 	last = log -1 HEAD
-	ca = commit -a
 	open = !gh browse
 	root = rev-parse --show-toplevel
-	smu = submodule foreach git pull origin master
 	sma = submodule add
+	smu = submodule foreach git pull origin master
