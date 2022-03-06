@@ -8,3 +8,6 @@
 [submodule "vim/pack/vendor/start/repeat"]
 	path = vim/pack/vendor/start/repeat
 	url = https://tpope.io/vim/repeat.git
+[submodule "vim/pack/vendor/start/vim-surround"]
+	path = vim/pack/vendor/start/vim-surround
+	url = https://github.com/tpope/vim-surround
