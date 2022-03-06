@@ -23,4 +23,4 @@
 	open = !gh browse
 	root = rev-parse --show-toplevel
 	sma = submodule add
-	smu = submodule foreach git pull origin master
+	smu = submodule foreach git submodule update --remote
