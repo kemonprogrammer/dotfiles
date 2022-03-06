@@ -104,7 +104,6 @@ fi
 # Create and change directory command
 mcd () {
 	mkdir "$1" && cd "$_";
-	echo "remote";
 }
 
 source ~/.config/up/up.sh
