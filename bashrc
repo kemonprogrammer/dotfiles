@@ -103,7 +103,7 @@ fi
 
 # Create and change directory command
 mcd () {
-	mkdir "$1" && cd "$_";
+	mkdir -p "$1" && cd "$_";
 }
 
 source ~/.config/up/up.sh
