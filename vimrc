@@ -18,6 +18,9 @@ set nu rnu
 " Deactivate sound and flashing on error
 set visualbell t_vb=
 
+" sane Y, more like C and D
+nnoremap Y y$
+
 " CTRL+l to unhighlight search matches
 nnoremap <silent> <C-l> :nohl<CR><C-l>
 
