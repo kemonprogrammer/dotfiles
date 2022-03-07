@@ -106,10 +106,13 @@ mcd () {
 	mkdir -p "$1" && cd "$_";
 }
 
+# up command instead of cd ../../../
 source ~/.config/up/up.sh
 
-
-
+# Source bash aliases
+if [ -e $HOME/.bash_aliases ]; then
+	source $HOME/.bash_aliases
+fi
 
 # Use local bashrc if created
 # bashrc_local="~/.bashrc.local" # doesn't work
@@ -117,7 +120,3 @@ if [ -f ~/.bashrc.local ]; then
 	source ~/.bashrc.local 
 fi
 
-# Source bash aliases
-if [ -e $HOME/.bash_aliases ]; then
-	source $HOME/.bash_aliases
-fi
