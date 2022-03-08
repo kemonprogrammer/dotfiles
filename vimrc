@@ -1,23 +1,18 @@
+" omitting this option and loading this vimrc with -u will load vim in vi mode
+set nocompatible 
+
 " set MYVIMRC path
 let $MYVIMRC="~/.vimrc"
 
-set nocompatible
+" --- Basic editing configurations ---
+set mouse=a " Enable the mouse
+set incsearch " highlight while typing in search box
+set hlsearch " highlight found searches
+set nu rnu " hybrid line numbers
+set visualbell t_vb= " Deactivate sound and flashing on error
 
-" Enable the mouse
-set mouse=a
 
-" highlight while typing in search box
-set incsearch
-
-" highlight found searches
-set hlsearch
-
-" hybrid line numbers
-set nu rnu
-
-" Deactivate sound and flashing on error
-set visualbell t_vb=
-
+" --- Mappings --- 
 " sane Y, more like C and D
 nnoremap Y y$
 
