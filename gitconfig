@@ -17,7 +17,7 @@
 	ba = branch -a
 	bd = branch -d
 	bD = branch -D
-	gr = log --oneline --graph
+	gr = log --oneline --graph --all
 	unstage = reset HEAD --
 	last = log -1 HEAD
 	open = !gh browse
