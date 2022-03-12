@@ -8,6 +8,7 @@
 	a = add
 	d = diff
 	st = status
+	f = fetch
 	c = commit
 	ca = commit -a
 	ch = checkout
