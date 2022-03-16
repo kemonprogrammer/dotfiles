@@ -10,9 +10,10 @@ set incsearch " highlight while typing in search box
 set hlsearch " highlight found searches
 set nu rnu " hybrid line numbers
 set visualbell t_vb= " Deactivate sound and flashing on error
-
+set ttymouse=xterm2 " To change window size with the mouse
 
 " --- Mappings --- 
+
 " sane Y, more like C and D
 nnoremap Y y$
 
