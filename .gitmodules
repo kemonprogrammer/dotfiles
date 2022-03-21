@@ -8,3 +8,6 @@
 [submodule "vim/pack/vendor/start/vim-surround"]
 	path = vim/pack/vendor/start/vim-surround
 	url = https://github.com/tpope/vim-surround
+[submodule "vim/pack/vendor/start/vimtex"]
+	path = vim/pack/vendor/start/vimtex
+	url = https://github.com/lervag/vimtex
