@@ -16,6 +16,8 @@ set ttymouse=xterm2 " To change window size with the mouse
 filetype plugin indent on
 syntax enable
 
+let g:vimtex_view_method = 'zathura'
+
 " --- Mappings --- 
 
 " sane Y, more like C and D
