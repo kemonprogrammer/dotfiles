@@ -8,6 +8,7 @@
     ~/.bashrc: bashrc
     ~/.bash_aliases: bash_aliases
     ~/.gitconfig: gitconfig
+    ~/.profile: profile
     ~/.vim: vim
     ~/.vimrc: vimrc
 
