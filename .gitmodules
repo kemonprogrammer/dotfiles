@@ -11,3 +11,6 @@
 [submodule "vim/pack/vendor/start/vimtex"]
 	path = vim/pack/vendor/start/vimtex
 	url = https://github.com/lervag/vimtex
+[submodule "vim/pack/vendor/start/ranger.vim"]
+	path = vim/pack/vendor/start/ranger.vim
+	url = https://github.com/francoiscabrol/ranger.vim
