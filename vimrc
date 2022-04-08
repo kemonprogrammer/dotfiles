@@ -12,6 +12,8 @@ set nu rnu " hybrid line numbers
 set visualbell t_vb= " Deactivate sound and flashing on error
 set ttymouse=xterm2 " To change window size with the mouse
 
+set shell=bash " for ranger.vim 
+
 " for VimTex?
 filetype plugin indent on
 syntax enable
