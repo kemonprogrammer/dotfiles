@@ -25,3 +25,5 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
+
+bash ~/.local/bin/bin_dotfiles/fetch-git-repos.sh
