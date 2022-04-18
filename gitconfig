@@ -25,3 +25,4 @@
 	root = rev-parse --show-toplevel
 	sma = submodule add
 	smu = submodule foreach git submodule update --remote
+	ss = status --short

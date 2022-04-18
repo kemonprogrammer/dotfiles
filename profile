@@ -26,4 +26,5 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
+export COMMAND_NOT_FOUND_INSTALL_PROMPT=1
 bash ~/.local/bin/bin_dotfiles/fetch-git-repos.sh
