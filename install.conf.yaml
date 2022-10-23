@@ -9,8 +9,17 @@
     ~/.bash_aliases: bash_aliases
     ~/.gitconfig: gitconfig
     ~/.bash_login: bash_login
-    ~/.vim: vim
+    ~/.vim: 
+      path: vim
+      resursive: true
     ~/.vimrc: vimrc
+    ~/.config/nvim:
+      create: true
+      path: nvim
+      recursive: true
+
+- create:
+    - ~/.config/nvim
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]

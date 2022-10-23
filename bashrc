@@ -113,10 +113,18 @@ mcd () {
 	mkdir -p "$1" && cd "$_";
 }
 
+stty -ixon
+
+# --- Sourcing files
+
 # up command instead of cd ../../../
 if [ -e ~/.config/up/up.sh ]; then
 	source ~/.config/up/up.sh
 fi
+
+
+# add bin folder to PATH
+export PATH="$HOME/dotfiles/bin/:$PATH"
 
 
 # Source bash aliases

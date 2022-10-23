@@ -11,3 +11,6 @@
 [submodule "vim/pack/vendor/start/vimtex"]
 	path = vim/pack/vendor/start/vimtex
 	url = https://github.com/lervag/vimtex
+[submodule "vim/plugged/vim-code-dark"]
+	path = vim/plugged/vim-code-dark
+	url = git@github.com:tomasiser/vim-code-dark.git
