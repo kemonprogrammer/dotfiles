@@ -1,0 +1,3 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =1
+let g:netrw_dirhist_1='/mnt/c/Users/MichaelLuu/Documents/_Documents/HAW_lokal/PM2/a1-sose-2022/A3/src/iterators/trains'
