@@ -88,19 +88,13 @@ vim.opt.shiftwidth = 2
 --     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 -- --- Mappings ---
-function map(mode, shortcut, command, options)
-    -- default options
-    options.noremap = true
-    vim.api.nvim_set_keymap(mode, shortcut, command, options)
+function map(mode, shortcut, command)
+    vim.api.nvim_set_keymap(mode, shortcut, command, {noremap = true})
 end
 
 -- #TODO overload functions to optionally pass options {} as 3rd parameter
 function nmap(shortcut, command)
-    map('n', shortcut, command, {})
-end
-
-function nmap(shortcut, command, options)
-    map('n', shortcut, command, options)
+    map('n', shortcut, command)
 end
 
 
@@ -113,20 +107,18 @@ function vmap(shortcut, command)
     map('v', shortcut, command)
 end
 -- Disable CTRL + c message
---nnoremap <C-c> <silent> <C-c>
--- #TODO with set command
+-- #TODO replace with set command
 vim.api.nvim_set_keymap('n', '<C-c>', '<Esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('i', '<C-c>', '<Esc>', { noremap = true, silent = true })
 
--- #TODO vnoremap g<C-a> g<C-a>gv<C-x><Esc>
 -- CTRL + S to save
 --nnoremap <silent> <C-S> :update<CR>
 nmap('<C-S>', ':update<CR>')
 --vnoremap <silent> <C-S> <ESC>:update<CR>gv
 vmap('<C-S>', '<ESC>:update<CR>gv')
-
 ---- TODO: try neovims beta feature CTRL+S 
 --inoremap <silent> <C-S> <C-O>:update<CR>
+--imap('<C-s>', '<C-O>:update<CR>')
 
 --
 ---- Leader shortcuts
@@ -141,26 +133,42 @@ vmap('<C-S>', '<ESC>:update<CR>gv')
 --
 ---- Autocenter
 --nnoremap G Gzz
+nmap('G', 'Gzz')
 --nnoremap g; g;zz
+nmap('g;', 'g;zz')
 --nnoremap g, g,zz
+nmap('g,', 'g,zz')
 --nnoremap n nzz
+nmap('n', 'nzz')
 --nnoremap N Nzz
----- scroll 10 lines up after centering, because I like to look at the center of
----- the screen
+nmap('N', 'Nzz')
 --nnoremap { {zz
+nmap('{', '{zz')
 --nnoremap } }zz
+nmap('}', '}zz')
 ---- nmap <C-U> <C-U>zz
+nmap('<C-u>', '<C-u>zz')
 ---- nmap <C-D> <C-D>zz
---
+nmap('<C-d>', '<C-d>zz')
+
+--- etc
 ---- Open file under cursor in split window
 --nnoremap <F8> :let mycurf=expand("<cfile>")<cr><c-w>p:execute("e ".mycurf)<cr>
---
---
+nmap('<F8>', ':let mycurf=expand("<cfile>")<cr><c-w>p:execute("e ".mycurf)<cr>')
+
+-- Staggering increment start by one,
+-- because I only use it to convert 1. 1. ... into 1. 2. ...
+--vnoremap g<C-a> g<C-a>gv<C-x><Esc>
+vmap('g<C-a>', 'g<C-a>gv<C-x><Esc>')
+vmap('g<C-x>', 'g<C-x>gv<C-a><Esc>')
+
 ---- Single insert commands
 --
 --
 ---- nmap <Enter> o<ESC>
+--nmap('<CR>', 'o<Esc>')
 ---- nmap <A-Enter> O<ESC>
+--nmap('<S-CR>', 'O<Esc>')
 --
 --
 ----  Try to jump to next method
