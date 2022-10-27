@@ -178,3 +178,16 @@ vmap('g<C-x>', 'g<C-x>gv<C-a><Esc>')
 ---- :map [] k$][%?}<CR>
 
 
+-- --- Color schemes ---
+-- vscode-like colorscheme
+--colorscheme codedark
+--vim.g.colorscheme = 'codedark'
+vim.cmd([[
+colorscheme codedark
+]])
+
+-- jetbrains-like colorscheme
+--colorscheme darcula
+
+-- Treesitter enable highlight on each new buffer
+-- ??
