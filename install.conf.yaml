@@ -4,6 +4,9 @@
 
 - clean: ['~']
 
+- create:
+    - ~/.config/nvim
+
 - link:
     ~/.bashrc: bashrc
     ~/.bash_aliases: bash_aliases
@@ -21,9 +24,6 @@
     ~/.config/nvim/lua: 
       path: nvim/lua
       resursive: true
-
-- create:
-    - ~/.config/nvim
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
