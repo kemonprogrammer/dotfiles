@@ -1,3 +1,4 @@
+
 ----  Plugins  ----
 local Plug = vim.fn['plug#']
 --local Fzf = vim.fn['fzf#']
@@ -50,6 +51,9 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'preservim/nerdtree'
 -- Plug 'scrooloose/nerdtree-project-plugin'  -- line 45 throws an error
 Plug 'ryanoasis/vim-devicons'
+
+-- etc
+Plug 'ThePrimeagen/vim-be-good'
 
 vim.call('plug#end')
 
