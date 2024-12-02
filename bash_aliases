@@ -17,3 +17,5 @@ alias g="git";
 # vim abbreviation
 alias v="vim";
 
+# Windows explorer
+alias exp="explorer.exe"
