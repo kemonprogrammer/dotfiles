@@ -147,3 +147,9 @@ export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 export PATH="/mnt/c/WINDOWS:$PATH"
+
+eval "$(oh-my-posh init bash --config ~/.config/ohmyposh/zen.toml)"
+
+# Add JBang to environment
+alias j!=jbang
+export PATH="$HOME/.jbang/bin:$PATH"
