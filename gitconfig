@@ -1,6 +1,8 @@
 [user]
 	name = Michael Luu
-	email = 67599521+kemonprogrammer@users.noreply.github.com
+  email = 67599521+kemonprogrammer@users.noreply.github.com
+[includeIf "gitdir:~/HC/"]
+  path = ~/.gitconfig.work
 [core]
 	editor = vim
 	autocrlf = input
@@ -18,7 +20,8 @@
 	ba = branch -a
 	bd = branch -d
 	bD = branch -D
-	gr = log --oneline --graph --all
+  #gr = log --oneline --graph --all
+  gr = log --graph --all --pretty=format:'%C(auto)%h (%cd) %s %d' --date=format-local:'%d.%m.%Y %H:%M'
 	unstage = reset HEAD --
 	last = log -1 HEAD
 	open = !gh browse
@@ -28,3 +31,11 @@
 	ss = status --short
 [push]
 	default = current
+[maintenance]
+	repo = /home/michael/HC/MAAS/nm-abo
+	repo = /home/michael/HC/MAAS/htd-api/user-service
+	repo = /home/michael/HC/MAAS/hansecom_keycloak_themes
+	repo = /home/michael/HAW/S7/WP_QRK/hurtigruten
+	repo = /home/michael/HC/api/maas-hub
+[init]
+	defaultBranch = main
