@@ -1,3 +1,4 @@
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 
@@ -164,7 +165,6 @@ bind 'set show-all-if-ambiguous on'
 bind 'TAB:menu-complete'
 
 # zoxide
-export PATH="$HOME/.local/bin:$PATH"
 eval "$(zoxide init --cmd cd bash)"
 
 # auto completion
