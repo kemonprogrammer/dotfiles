@@ -2,8 +2,6 @@
     link: 
       relink: true
 
-- clean: ['~']
-
 - create:
     - ~/.config/nvim
 
@@ -24,6 +22,8 @@
     ~/.config/nvim/lua: 
       path: nvim/lua
       resursive: true
+    ~/.config/ohmyposh/zen.toml:
+      path: ohmyposh/zen.toml 
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]

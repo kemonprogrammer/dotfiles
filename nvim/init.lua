@@ -195,3 +195,4 @@ colorscheme codedark
 
 -- Treesitter enable highlight on each new buffer
 -- ??
+vim.g.NERDTreeShowHidden = 1

@@ -20,3 +20,5 @@ alias v="vim";
 # Windows explorer
 alias exp="explorer.exe"
 alias xclip="clip.exe"
+
+source ~/.bash_aliases.local

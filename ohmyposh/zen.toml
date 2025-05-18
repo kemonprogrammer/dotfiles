@@ -30,8 +30,8 @@ final_space = true
     style = 'plain'
     foreground = 'white'
     background = 'transparent'
-    # template = '{{ .HEAD }}{{ if .Working.Changed }}*{{end}}{{ if .Staging.Changed }}+{{ end }}<cyan>{{ if gt .Ahead 0 }} {{ .Ahead }}⬆{{ end }}{{ if gt .Behind 0 }} ⬇{{ .Behind }}{{end}}</cyan>'
-    template = '{{ .HEAD }}{{ if .Working.Changed }}  {{end}}{{ if and .Staging.Changed (not .Working.Changed) }} {{ end }}{{ if .Staging.Changed }} {{ end }}<green>{{ if gt .Ahead 0 }} {{ .Ahead }}⬆{{ end }}</><cyan>{{ if gt .Behind 0 }}⬇{{ .Behind }}{{end}}</>{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }}'
+    # template = '{{ .HEAD }}{{ if .Working.Changed }}  {{end}}{{ if and .Staging.Changed (not .Working.Changed) }} {{ end }}{{ if .Staging.Changed }} {{ end }}<green>{{ if gt .Ahead 0 }} {{ .Ahead }}⬆{{ end }}</><cyan>{{ if gt .Behind 0 }}⬇{{ .Behind }}{{end}}</>{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }}'
+    template = '{{ .HEAD }}{{ if or .Staging.Changed (.Working.Changed) }} ({{end}}{{ if .Working.Changed }}*{{end}}{{ if .Staging.Changed }}+{{ end }}{{ if or .Staging.Changed (.Working.Changed) }}){{end}}<green>{{ if or (gt .Ahead 0) (gt .Behind 0) }} {{ end }}{{ if gt .Ahead 0 }}{{ .Ahead }}⬆{{ end }}</><cyan>{{ if gt .Behind 0 }}⬇{{ .Behind }}{{end}}</>{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }}'
 
     [blocks.segments.properties]
       display_status = true

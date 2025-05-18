@@ -158,3 +158,29 @@ export PATH="$HOME/.jbang/bin:$PATH"
 source /usr/share/doc/fzf/examples/key-bindings.bash
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# ZSH-like Autocompletion
+bind 'set show-all-if-ambiguous on'
+bind 'TAB:menu-complete'
+
+# zoxide
+export PATH="$HOME/.local/bin:$PATH"
+eval "$(zoxide init --cmd cd bash)"
+
+# auto completion
+# src: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#enable-shell-autocompletion
+source /usr/share/bash-completion/bash_completion
+source <(kubectl completion bash)
+
+# fzf for fuzzy finding file content
+fzf_rg() {
+    RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case"
+    local selected
+    selected=$(eval "$RG_PREFIX \"$1\"" | fzf --ansi --delimiter ':' \
+        --preview 'bat --color=always --style=numbers --highlight-line {2} {1}' \
+        --bind 'enter:execute(nvim {1} +{2})')
+    [ -n "$selected" ] && echo "$selected"
+}
+
+bind -x '"\C-f": "fzf_rg "'  # Press Ctrl+F to trigger fzf_rg
+alias k='kubectl'

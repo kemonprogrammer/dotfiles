@@ -1,7 +1,7 @@
 [user]
 	name = Michael Luu
   email = 67599521+kemonprogrammer@users.noreply.github.com
-[includeIf "gitdir:~/HC/"]
+[includeIf "gitdir:~/hc/"]
   path = ~/.gitconfig.work
 [core]
 	editor = vim
@@ -28,7 +28,11 @@
 	root = rev-parse --show-toplevel
 	sma = submodule add
 	smu = submodule foreach git submodule update --remote
+	s = status
 	ss = status --short
+	wta = worktree add
+	wtl = worktree list
+	wtr = worktree remove
 [push]
 	default = current
 [maintenance]
@@ -39,3 +43,5 @@
 	repo = /home/michael/HC/api/maas-hub
 [init]
 	defaultBranch = main
+[http]
+	postBuffer = 157286400
