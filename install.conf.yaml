@@ -4,6 +4,7 @@
 
 - create:
     - ~/.config/nvim
+    - ~/.config/ohmyposh
 
 - link:
     ~/.bashrc: bashrc
