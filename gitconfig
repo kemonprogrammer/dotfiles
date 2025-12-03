@@ -14,6 +14,8 @@
 	c = commit
 	ca = commit -a
 	ch = checkout
+  ex = soft-exclude 
+  soft-exclude = "!f() { git reset --soft HEAD^ || exit 1; for file in \"$@\"; do git restore --staged \"$file\" || exit 1; done; git commit -C HEAD@{1}; }; f"
 	ps = push
 	pl = pull
 	br = branch
