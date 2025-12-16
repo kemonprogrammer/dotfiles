@@ -21,4 +21,6 @@ alias v="vim";
 alias exp="explorer.exe"
 alias xclip="clip.exe"
 
-source ~/.bash_aliases.local
+if [ -f ~/.bash_aliases.local ]; then
+	source ~/.bash_aliases.local
+fi

@@ -140,7 +140,6 @@ if [ -f ~/.bashrc.local ]; then
 fi
 
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 export PATH="/opt/warden/bin:$PATH"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
@@ -156,7 +155,16 @@ alias j!=jbang
 export PATH="$HOME/.jbang/bin:$PATH"
 
 # --- fzf
-source /usr/share/doc/fzf/examples/key-bindings.bash
+if [ -e /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+if [ -e /usr/share/doc/fzf/examples/key-bindings.bash ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.bash
+fi
+if [ -e /usr/share/fzf/shell/key-bindings.bash ]; then
+    source /usr/share/fzf/shell/key-bindings.bash
+fi
+
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
@@ -184,3 +192,12 @@ fzf_rg() {
 
 bind -x '"\C-f": "fzf_rg "'  # Press Ctrl+F to trigger fzf_rg
 alias k='kubectl'
+
+eval "$(fzf --bash)"
+# Preview file content using bat (https://github.com/sharkdp/bat)
+export FZF_CTRL_T_OPTS="
+  --walker-skip .git,node_modules,target
+  --preview 'bat -n --color=always {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
+alias open=xdg-open

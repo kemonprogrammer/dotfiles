@@ -4,7 +4,7 @@ zoxide  $ curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/i
 ohmyposh  $ curl -s https://ohmyposh.dev/install.sh | bash -s
 fdfind  $ sudo apt-get install fd-find
 ripgrep  $ sudo apt-get install ripgrep
-fzf  $ brew install fzf
+fzf  $ sudo apt install fzf
 
 setup neovim vim plug
 ``` sh
@@ -18,6 +18,9 @@ neovim
 
 fonts
 - Fira mono nerdfont  $ wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraMono.zip
+
+kubectl
+   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
 
 
