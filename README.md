@@ -6,6 +6,16 @@ fdfind  $ sudo apt-get install fd-find
 ripgrep  $ sudo apt-get install ripgrep
 fzf  $ brew install fzf
 
+setup neovim vim plug
+``` sh
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+# then install
+neovim 
+:PlugInstall
+```
+
+
 fonts
 - Fira mono nerdfont  $ wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraMono.zip
 
