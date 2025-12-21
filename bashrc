@@ -9,8 +9,10 @@ case $- in
 esac
 
 # Set vim as $VISUAL and $EDITOR
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
+export SUDO_EDITOR="$VISUAL"
+
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -201,3 +203,8 @@ export FZF_CTRL_T_OPTS="
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
 alias open=xdg-open
+
+export GOPATH=$HOME/go
+export PATH="$PATH:$GOPATH/bin"
+
+alias mk=minikube
