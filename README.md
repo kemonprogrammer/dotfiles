@@ -1,4 +1,6 @@
 todos 
+- [ ] linux chrome -> get flag from .desktop file
+- [ ] linux chrome rename PWAs
 - [ ] auto install following programs
 zoxide  $ curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 ohmyposh  $ curl -s https://ohmyposh.dev/install.sh | bash -s
@@ -22,6 +24,10 @@ fonts
 kubectl
    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
+
+sudo visudo
+`Defaults editor=/usr/bin/nvim`
+`<yourusername> ALL=(ALL) NOPASSWD: /usr/local/bin/minikube`
 
 
 # Dotfiles
