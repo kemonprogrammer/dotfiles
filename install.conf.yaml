@@ -7,14 +7,14 @@
     - ~/.config/ohmyposh
 
 - link:
-    ~/.bashrc: bashrc
-    ~/.bash_aliases: bash_aliases
-    ~/.gitconfig: gitconfig
-    ~/.bash_login: bash_login
+    ~/.bashrc: .bashrc
+    ~/.bash_aliases: .bash_aliases
+    ~/.gitconfig: .gitconfig
+    ~/.bash_login: .bash_login
     ~/.vim: 
       path: vim
       resursive: true
-    ~/.vimrc: vimrc
+    ~/.vimrc: .vimrc
     ~/.wslrc.sh: .wslrc.sh
     ~/.ideavimrc: .ideavimrc
     ~/.config/nvim/init.lua: 
