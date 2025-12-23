@@ -187,31 +187,41 @@ fzf_rg() {
     RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case"
     local selected
     selected=$(eval "$RG_PREFIX \"$1\"" | fzf --ansi --delimiter ':' \
-        --preview 'bat --color=always --style=numbers --highlight-line {2} {1}' \
+        --preview 'batcat --color=always --style=numbers --highlight-line {2} {1}' \
         --bind 'enter:execute(nvim {1} +{2})')
     [ -n "$selected" ] && echo "$selected"
 }
 
 bind -x '"\C-f": "fzf_rg "'  # Press Ctrl+F to trigger fzf_rg
 alias k='kubectl'
+alias mk=minikube
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/michael/downloads/google-cloud-sdk/path.bash.inc' ]; then . '/home/michael/downloads/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/michael/downloads/google-cloud-sdk/completion.bash.inc' ]; then . '/home/michael/downloads/google-cloud-sdk/completion.bash.inc'; fi
+export GOPATH=$HOME/go
+export PATH="$PATH:$GOPATH/bin"
+
+# Only set Windows-specific aliases if running in WSL
+if grep -qEi "(Microsoft|WSL)" /proc/version; then
+    [ -f ~/.wslrc.sh ] && source ~/.wslrc.sh
+fi
+
+export KIALI_SOURCES="~/kiali-sources"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="$PATH:$HOME/.npm-global/bin"
+
+export PATH=~/istio-1.26.2/bin:$PATH
 
 eval "$(fzf --bash)"
-# Preview file content using bat (https://github.com/sharkdp/bat)
 export FZF_CTRL_T_OPTS="
   --walker-skip .git,node_modules,target
   --preview 'bat -n --color=always {}'
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
 alias open=xdg-open
-
-export GOPATH=$HOME/go
-export PATH="$PATH:$GOPATH/bin"
-
-alias mk=minikube
-
-# Windows explorer
-# Only set Windows-specific aliases if running in WSL
-if grep -qEi "(Microsoft|WSL)" /proc/version; then
-    [ -f ~/.wslrc.sh ] && source ~/.wslrc.sh
-fi
-

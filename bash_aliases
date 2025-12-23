@@ -17,6 +17,11 @@ alias g="git";
 # vim abbreviation
 alias v="vim";
 
+# Use batcat as bat on apt-based systems
+if command -v batcat >/dev/null 2>&1; then
+    alias bat='batcat'
+fi
+
 if [ -f ~/.bash_aliases.local ]; then
-	source ~/.bash_aliases.local
+	source ~/.bash_aliases.local 
 fi
