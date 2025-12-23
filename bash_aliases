@@ -17,12 +17,6 @@ alias g="git";
 # vim abbreviation
 alias v="vim";
 
-# Windows explorer
-# Only set Windows-specific aliases if running in WSL
-if grep -qEi "(Microsoft|WSL)" /proc/version; then
-    [ -f ~/.wslrc.sh ] && source ~/.wslrc.sh
-fi
-
 if [ -f ~/.bash_aliases.local ]; then
 	source ~/.bash_aliases.local
 fi

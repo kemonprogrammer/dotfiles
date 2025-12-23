@@ -16,6 +16,7 @@
       resursive: true
     ~/.vimrc: vimrc
     ~/.wslrc.sh: .wslrc.sh
+    ~/.ideavimrc: .ideavimrc
     ~/.config/nvim/init.lua: 
       path: nvim/init.lua
     ~/.config/nvim/ftplugin: 

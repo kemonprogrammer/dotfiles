@@ -208,3 +208,10 @@ export GOPATH=$HOME/go
 export PATH="$PATH:$GOPATH/bin"
 
 alias mk=minikube
+
+# Windows explorer
+# Only set Windows-specific aliases if running in WSL
+if grep -qEi "(Microsoft|WSL)" /proc/version; then
+    [ -f ~/.wslrc.sh ] && source ~/.wslrc.sh
+fi
+

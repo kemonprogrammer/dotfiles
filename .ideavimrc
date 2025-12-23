@@ -1,0 +1,8 @@
+nnoremap Y y$
+
+set nu rnu
+set multiple-cursors
+set ignorecase smartcase
+
+set highlightedyank " highlight yanked text
+let g:highlightedyank_highlight_duration = "-1" " highlight yanked text until next action
