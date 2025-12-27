@@ -187,7 +187,7 @@ fzf_rg() {
     RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case"
     local selected
     selected=$(eval "$RG_PREFIX \"$1\"" | fzf --ansi --delimiter ':' \
-        --preview 'batcat --color=always --style=numbers --highlight-line {2} {1}' \
+        --preview 'bat --color=always --style=numbers --highlight-line {2} {1}' \
         --bind 'enter:execute(nvim {1} +{2})')
     [ -n "$selected" ] && echo "$selected"
 }
@@ -216,7 +216,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 export PATH="$PATH:$HOME/.npm-global/bin"
 
-export PATH=~/istio-1.26.2/bin:$PATH
+export PATH="$PATH:$HOME/.istioctl/bin"
 
 eval "$(fzf --bash)"
 export FZF_CTRL_T_OPTS="
@@ -225,3 +225,4 @@ export FZF_CTRL_T_OPTS="
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
 alias open=xdg-open
+
