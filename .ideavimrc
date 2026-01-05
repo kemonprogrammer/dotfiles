@@ -8,3 +8,4 @@ set highlightedyank " highlight yanked text
 "let g:highlightedyank_highlight_duration = "-1" " highlight yanked text until next action
 
 set incsearch " incremental search
+set hlsearch " highlight all found search patterns
