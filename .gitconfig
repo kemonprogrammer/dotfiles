@@ -4,7 +4,7 @@
 [includeIf "gitdir:~/hc/"]
   path = ~/.gitconfig.work
 [core]
-	editor = vim
+	editor = nvim -f
 	autocrlf = input
 [alias]
 	a = add
