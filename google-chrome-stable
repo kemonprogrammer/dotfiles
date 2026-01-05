@@ -1,0 +1,5 @@
+#!/bin/bash
+# TouchpadOverscrollHistoryNavigation and --ozone-platform-hint for touchpad swipe navigation
+# MiddleClickAutoscroll to enable scroll by clicking scroll button
+# --test-type to hide banner that MiddleClickAutoscroll is an unknown flag
+exec /usr/bin/google-chrome-stable --enable-features=TouchpadOverscrollHistoryNavigation --ozone-platform-hint=auto --enable-blink-features=MiddleClickAutoscroll --test-type "$@"
