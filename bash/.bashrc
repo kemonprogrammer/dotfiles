@@ -225,4 +225,14 @@ export FZF_CTRL_T_OPTS="
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
 alias open=xdg-open
+alias hist='history | head -n -1 && history -d $(history 1 | awk "{print \$1}")'
 
+# Binds Alt+C to pipe the current line to xclip
+copy_buffer_to_clipboard() {
+    # For X11
+    echo -n "$READLINE_LINE" | xclip -sel clip
+    # For Wayland, use: echo -n "$READLINE_LINE" | wl-copy
+}
+
+# Create a Readline bind
+bind -x '"\ec": copy_buffer_to_clipboard'
