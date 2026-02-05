@@ -3,7 +3,8 @@
 local Plug = vim.fn['plug#']
 --local Fzf = vim.fn['fzf#']
 
-vim.call('plug#begin', '~/.config/nvim/plugged')
+-- vim.call('plug#begin', '~/.config/nvim/plugged')
+vim.call('plug#begin')
 
 -- surround.vim
 Plug 'tpope/vim-surround'
