@@ -18,12 +18,15 @@
     ~/.wslrc.sh: .wslrc.sh
     ~/.ideavimrc: .ideavimrc
     ~/.config/nvim/init.lua: 
-      path: nvim/init.lua
+      path: neovim/init.lua
     ~/.config/nvim/ftplugin: 
-      path: nvim/ftplugin
+      path: neovim/ftplugin
       resursive: true
     ~/.config/nvim/lua: 
-      path: nvim/lua
+      path: neovim/lua
+      resursive: true
+    ~/.local/share/nvim/site/autoload:
+      path: neovim/.local/share/nvim/site/autoload
       resursive: true
     ~/scripts:
       path: scripts
