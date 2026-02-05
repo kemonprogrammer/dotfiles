@@ -25,6 +25,9 @@
     ~/.config/nvim/lua: 
       path: nvim/lua
       resursive: true
+    ~/scripts:
+      path: scripts
+      resursive: true
     ~/.config/ohmyposh/zen.toml:
       path: ohmyposh/zen.toml 
 
