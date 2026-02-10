@@ -12,3 +12,5 @@ sudo dnf install -y \
 flatpak install -y flathub org.localsend.localsend_app
 
 pip3 install --upgrade gnome-extensions-cli
+
+flatpak install -y flathub app/io.missioncenter.MissionCenter/x86_64/stable
