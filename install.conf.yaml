@@ -17,6 +17,12 @@
     ~/.config/ohmyposh/zen.toml:
       path: bash/.config/ohmyposh/zen.toml 
 
+    # Gnome
+    ~/.config/gnome:
+      path: gnome/.config/gnome
+      resursive: true
+
+
     # Git
     ~/.gitconfig: .gitconfig
 

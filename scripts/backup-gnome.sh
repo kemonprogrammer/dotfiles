@@ -1,7 +1,7 @@
 #!/bin/bash
 cd ~/.dotfiles
 DOTFILES_DIR=$(git rev-parse --show-toplevel)
-DCONF_DIR="$DOTFILES_DIR/gnome/.config/gnome"
+DCONF_DIR="~/.config/gnome"
 
 mkdir -p "$DCONF_DIR"
 
