@@ -1,1 +1,1 @@
-['background-logo@fedorahosted.org', 'dash-to-dock@micxgx.gmail.com', 'clipboard-indicator@tudmotu.com', 'multi-monitors-bar@frederykabryan', 'just-perfection-desktop@just-perfection']
+['background-logo@fedorahosted.org', 'clipboard-indicator@tudmotu.com', 'multi-monitors-bar@frederykabryan', 'just-perfection-desktop@just-perfection', 'dash-to-dock@micxgx.gmail.com']
