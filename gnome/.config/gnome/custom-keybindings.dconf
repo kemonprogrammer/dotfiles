@@ -1,0 +1,4 @@
+[custom0]
+binding='<Control><Shift>Escape'
+command='flatpak run io.missioncenter.MissionCenter'
+name='Mission Center'
