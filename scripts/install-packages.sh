@@ -7,3 +7,4 @@ sudo dnf install -y \
   bat \
   python3 \
   python3-pip \
+  browserpass \

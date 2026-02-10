@@ -1,0 +1,6 @@
+[/]
+maximize-horizontally=['<Super>x']
+maximize-vertically=['<Super>z']
+minimize=['<Super>Escape']
+show-desktop=['<Super>d']
+show-screenshot-ui=['Print', '<Super><Shift>s']
