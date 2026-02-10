@@ -45,6 +45,10 @@
       path: neovim/.local/share/nvim/site/autoload
       resursive: true
 
+    # Chrome
+    ~/.local/bin/google-chrome:
+      path: chrome/.local/bin/google-chrome
+
     # Other
     ~/.wslrc.sh: .wslrc.sh
     ~/.ideavimrc: .ideavimrc
