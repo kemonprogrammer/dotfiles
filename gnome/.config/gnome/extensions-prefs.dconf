@@ -15,7 +15,7 @@ extend-height=true
 height-fraction=0.40000000000000002
 hide-delay=0.49999999999999994
 intellihide-mode='FOCUS_APPLICATION_WINDOWS'
-multi-monitor=false
+multi-monitor=true
 preferred-monitor=-2
 preferred-monitor-by-connector='DP-6'
 
