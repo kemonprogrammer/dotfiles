@@ -38,10 +38,10 @@ git add "gnome/.config/gnome"
 # Check if there are staged changes specifically in that path
 if ! git diff --cached --quiet -- "gnome/.config/gnome"; then
     echo "Changes detected. Committing..."
-    git commit -m "Update gnome configurations"
+    git commit -m "Update gnome configuration"
     
     echo "Pushing changes to remote..."
     git push
 else
-    echo "No changes in gnome configurations to commit. Nothing to push."
+    echo "No changes in gnome configuration to commit. Nothing to push."
 fi
