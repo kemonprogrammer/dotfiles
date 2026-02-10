@@ -8,3 +8,5 @@ sudo dnf install -y \
   python3 \
   python3-pip \
   browserpass \
+
+pip3 install --upgrade gnome-extensions-cli
