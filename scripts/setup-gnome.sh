@@ -49,5 +49,16 @@ if [ -f "$ENABLED_FILE" ]; then
     gsettings set org.gnome.shell enabled-extensions "$ENABLED_LIST"
 fi
 
+# 4. Restore keyboard shortcuts
+echo "Saving gnome window keybindings..."
+dconf load /org/gnome/desktop/wm/keybindings/ < "$SOURCE_DIR/window-shortcuts.dconf"
+
+echo "Saving gnome app keybindings..."
+dconf load /org/gnome/shell/keybindings/ < "$SOURCE_DIR/app-shortcuts.dconf"
+
+echo "Saving custom keybindings..."
+dconf load /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/ < "$SOURCE_DIR/custom-keybindings.dconf"
+
+
 echo "--- Restore Complete ---"
 echo "Note: You usually need to restart GNOME Shell by logging out and back in to apply changes."

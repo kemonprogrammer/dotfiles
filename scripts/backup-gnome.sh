@@ -2,27 +2,30 @@
 
 # Define paths relative to your home directory
 DOTFILES_ROOT="$HOME/.dotfiles"
-DCONF_DIR="$DOTFILES_ROOT/gnome/.config/gnome"
+SOURCE_DIR="$DOTFILES_ROOT/gnome/.config/gnome"
 
 # Create the directory if it doesn't exist
-mkdir -p "$DCONF_DIR"
+mkdir -p "$SOURCE_DIR"
 
 echo "Saving gnome window keybindings..."
-dconf dump /org/gnome/desktop/wm/keybindings/ > "$DCONF_DIR/window-shortcuts.dconf"
+dconf dump /org/gnome/desktop/wm/keybindings/ > "$SOURCE_DIR/window-shortcuts.dconf"
 
 echo "Saving gnome app keybindings..."
-dconf dump /org/gnome/shell/keybindings/ > "$DCONF_DIR/app-shortcuts.dconf"
+dconf dump /org/gnome/shell/keybindings/ > "$SOURCE_DIR/app-shortcuts.dconf"
 
 echo "Saving extension list..."
-gnome-extensions list > "$DCONF_DIR/extensions.list"
+gnome-extensions list > "$SOURCE_DIR/extensions.list"
 
 echo "Saving enabled extensions..."
-gsettings get org.gnome.shell enabled-extensions > "$DCONF_DIR/enabled-extensions.txt"
+gsettings get org.gnome.shell enabled-extensions > "$SOURCE_DIR/enabled-extensions.txt"
 
 echo "Saving extension settings..."
-dconf dump /org/gnome/shell/extensions/ > "$DCONF_DIR/extensions-prefs.dconf"
+dconf dump /org/gnome/shell/extensions/ > "$SOURCE_DIR/extensions-prefs.dconf"
 
-echo "Completed Gnome backup in $DCONF_DIR"
+echo "Saving custom keybindings..."
+dconf dump /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/ > "$SOURCE_DIR/custom-keybindings.dconf"
+
+echo "Completed Gnome backup in $SOURCE_DIR"
 
 # --- Git Logic ---
 
