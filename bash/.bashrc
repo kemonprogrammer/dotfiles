@@ -236,3 +236,5 @@ copy_buffer_to_clipboard() {
 
 # Create a Readline bind
 bind -x '"\ec": copy_buffer_to_clipboard'
+
+alias gs=""
