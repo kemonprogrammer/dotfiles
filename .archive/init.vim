@@ -17,7 +17,7 @@ Plug 'doums/darcula'
 Plug 'tpope/vim-commentary'
 
 " statusline
-Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline'  "seems to be broken on wsl
 
 " Fuzzy finder
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -129,6 +129,8 @@ vnoremap <silent> <C-S> <ESC>:update<CR>gv
 " TODO: try neovims beta feature CTRL+S 
 inoremap <silent> <C-S> <C-O>:update<CR>
 
+let mapleader=" "
+
 " Leader shortcuts
 nnoremap <leader>ee :NERDTreeFocus<CR>
 nnoremap <leader>et :NERDTreeToggle<CR>
@@ -140,15 +142,15 @@ nmap <Leader>pu :PlugUpdate<CR>
 nmap <Leader>so :source $MYVIMRC<CR>
 
 " Autocenter
-nnoremap G Gzz
-nnoremap g; g;zz
-nnoremap g, g,zz
-nnoremap n nzz
-nnoremap N Nzz
-" scroll 10 lines up after centering, because I like to look at the center of
-" the screen
-nnoremap { {zz
-nnoremap } }zz
+" nnoremap G Gzz
+" nnoremap g; g;zz
+" nnoremap g, g,zz
+" nnoremap n nzz
+" nnoremap N Nzz
+" " scroll 10 lines up after centering, because I like to look at the center of
+" " the screen
+" nnoremap { {zz
+" nnoremap } }zz
 " nmap <C-U> <C-U>zz
 " nmap <C-D> <C-D>zz
 

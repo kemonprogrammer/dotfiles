@@ -21,7 +21,7 @@ Plug 'doums/darcula'
 Plug 'tpope/vim-commentary'
 
 -- statusline
-Plug 'vim-airline/vim-airline'
+-- Plug 'vim-airline/vim-airline'
 
 -- Fuzzy finder
 Plug ('junegunn/fzf', { ['do'] = vim.fn['fzf#install()'] })
@@ -137,24 +137,24 @@ vmap('<C-S>', '<ESC>:update<CR>gv')
 --nmap <Leader>so :source $MYVIMRC<CR>
 --
 ---- Autocenter
---nnoremap G Gzz
-nmap('G', 'Gzz')
---nnoremap g; g;zz
-nmap('g;', 'g;zz')
---nnoremap g, g,zz
-nmap('g,', 'g,zz')
---nnoremap n nzz
-nmap('n', 'nzz')
---nnoremap N Nzz
-nmap('N', 'Nzz')
---nnoremap { {zz
-nmap('{', '{zz')
---nnoremap } }zz
-nmap('}', '}zz')
----- nmap <C-U> <C-U>zz
-nmap('<C-u>', '<C-u>zz')
----- nmap <C-D> <C-D>zz
-nmap('<C-d>', '<C-d>zz')
+----nnoremap G Gzz
+--nmap('G', 'Gzz')
+----nnoremap g; g;zz
+--nmap('g;', 'g;zz')
+----nnoremap g, g,zz
+--nmap('g,', 'g,zz')
+----nnoremap n nzz
+--nmap('n', 'nzz')
+----nnoremap N Nzz
+--nmap('N', 'Nzz')
+----nnoremap { {zz
+--nmap('{', '{zz')
+----nnoremap } }zz
+--nmap('}', '}zz')
+------ nmap <C-U> <C-U>zz
+--nmap('<C-u>', '<C-u>zz')
+------ nmap <C-D> <C-D>zz
+--nmap('<C-d>', '<C-d>zz')
 
 --- etc
 ---- Open file under cursor in split window
