@@ -106,8 +106,12 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 if ! shopt -oq posix; then
 	if [ -f /usr/share/bash-completion/bash_completion ]; then
 		. /usr/share/bash-completion/bash_completion
+    # don't display idiotic suggestions on cd
+    complete -r cd
 	elif [ -f /etc/bash_completion ]; then
 		. /etc/bash_completion
+    # don't display idiotic suggestions on cd
+    complete -r cd
 	fi
 fi
 
@@ -168,19 +172,15 @@ if [ -e /usr/share/fzf/shell/key-bindings.bash ]; then
 fi
 
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+
+export FZF_CTRL_T_OPTS="
+  --walker-skip .git,node_modules,target
+  --preview 'bat -n --color=always {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# ZSH-like Autocompletion
-bind 'set show-all-if-ambiguous on'
-bind 'TAB:menu-complete'
-
-# zoxide
-eval "$(zoxide init --cmd cd bash)"
-
-# auto completion
-# src: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#enable-shell-autocompletion
-source /usr/share/bash-completion/bash_completion
-source <(kubectl completion bash)
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # fzf for fuzzy finding file content
 fzf_rg() {
@@ -193,7 +193,21 @@ fzf_rg() {
 }
 
 bind -x '"\C-f": "fzf_rg "'  # Press Ctrl+F to trigger fzf_rg
+
+# ZSH-like Autocompletion
+bind 'set show-all-if-ambiguous on'
+bind 'TAB:menu-complete'
+
+# zoxide
+eval "$(zoxide init --cmd cd bash)"
+
+# auto completion
+# src: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#enable-shell-autocompletion
+source <(kubectl completion bash)
 alias k='kubectl'
+# 2. Tell Bash that 'k' should use the same logic as 'kubectl'
+complete -F __start_kubectl k
+
 alias mk=minikube
 
 # The next line updates PATH for the Google Cloud SDK.
@@ -218,12 +232,6 @@ export PATH="$PATH:$HOME/.npm-global/bin"
 
 export PATH="$PATH:$HOME/.istioctl/bin"
 
-eval "$(fzf --bash)"
-export FZF_CTRL_T_OPTS="
-  --walker-skip .git,node_modules,target
-  --preview 'bat -n --color=always {}'
-  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-
 alias open=xdg-open
 alias hist='history | head -n -1 && history -d $(history 1 | awk "{print \$1}")'
 
@@ -238,3 +246,39 @@ copy_buffer_to_clipboard() {
 bind -x '"\ec": copy_buffer_to_clipboard'
 
 alias gs=""
+
+export PATH="$PATH:/usr/local/go/bin"
+
+# Helper function to list passwords
+_fzf_pass_list() {
+    # Using 'command' ensures we call the real find/sed/fzf, not an alias or function
+    command find "$HOME/.password-store/" -name "*.gpg" | \
+    command sed "s|.*.password-store/||;s|.gpg$||" | \
+    command fzf --height 40% --reverse --border
+}
+
+# Remove a password entry
+passrm() {
+    local target
+    target=$(_fzf_pass_list)
+    
+    # Check if target is empty (User pressed Esc or Ctrl+C in fzf)
+    if [[ -n "$target" ]]; then
+        # 'command pass' bypasses any aliases or functions named 'pass'
+        command pass rm "$target"
+    else
+        echo "No password selected."
+    fi
+}
+
+# Copy a password to clipboard
+passc() {
+    local target
+    target=$(_fzf_pass_list)
+    
+    if [[ -n "$target" ]]; then
+        command pass -c "$target"
+    else
+        echo "No password selected."
+    fi
+}
