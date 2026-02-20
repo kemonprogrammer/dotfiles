@@ -43,7 +43,10 @@
 	repo = /home/michael/HC/MAAS/hansecom_keycloak_themes
 	repo = /home/michael/HAW/S7/WP_QRK/hurtigruten
 	repo = /home/michael/HC/api/maas-hub
+	repo = /home/michael/haw/github-go-client
 [init]
 	defaultBranch = main
 [http]
 	postBuffer = 157286400
+[safe]
+	directory = *
