@@ -49,6 +49,10 @@
     ~/.local/bin/google-chrome:
       path: chrome/.local/bin/google-chrome
 
+    # Nautilus
+    ~/.local/share/nautilus-python/extensions/new_file_fix.py:
+      path: nautilus/.local/share/nautilus-python/extensions/new_file_fix.py
+
     # Other
     ~/.wslrc.sh: .wslrc.sh
     ~/.ideavimrc: .ideavimrc
