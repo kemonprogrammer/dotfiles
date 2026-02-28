@@ -283,3 +283,20 @@ passc() {
     fi
 }
 
+# Modern WSLg Wayland redirection (Bulletproof)
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+export WAYLAND_DISPLAY=wayland-0
+export DISPLAY=:0
+
+# 1. Ensure the runtime directory exists with correct user permissions
+if [ ! -d "$XDG_RUNTIME_DIR" ]; then
+    sudo mkdir -p "$XDG_RUNTIME_DIR"
+    sudo chmod 0700 "$XDG_RUNTIME_DIR"
+    sudo chown $(id -u):$(id -g) "$XDG_RUNTIME_DIR"
+fi
+
+# 2. Link the WSLg Wayland socket
+if [ -d "/mnt/wslg" ] && [ ! -S "$XDG_RUNTIME_DIR/wayland-0" ]; then
+    ln -sf /mnt/wslg/runtime-dir/wayland-0* "$XDG_RUNTIME_DIR/"
+fi
+. "$HOME/.cargo/env"
