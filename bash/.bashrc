@@ -235,10 +235,10 @@ export PATH="$PATH:$HOME/.istioctl/bin"
 alias open=xdg-open
 alias hist='history | head -n -1 && history -d $(history 1 | awk "{print \$1}")'
 
-# Binds Alt+C to pipe the current line to xclip
+# Binds Alt-C to pipe the current line to xclip
 copy_buffer_to_clipboard() {
     # For X11
-    echo -n "$READLINE_LINE" | xclip -sel clip
+    echo -n "$READLINE_LINE" | command xclip -selection clipboard
     # For Wayland, use: echo -n "$READLINE_LINE" | wl-copy
 }
 
@@ -282,3 +282,4 @@ passc() {
         echo "No password selected."
     fi
 }
+
