@@ -38,11 +38,10 @@
 [push]
 	default = current
 [maintenance]
-	repo = /home/michael/HC/MAAS/nm-abo
-	repo = /home/michael/HC/MAAS/htd-api/user-service
-	repo = /home/michael/HC/MAAS/hansecom_keycloak_themes
-	repo = /home/michael/HAW/S7/WP_QRK/hurtigruten
-	repo = /home/michael/HC/api/maas-hub
+	repo = /home/michael/hc/nm-abo
+	repo = /home/michael/hc/user-service
+	repo = /home/michael/hc/hansecom_keycloak_themes
+	repo = /home/michael/hc/maas-hub
 	repo = /home/michael/haw/github-go-client
 [init]
 	defaultBranch = main
