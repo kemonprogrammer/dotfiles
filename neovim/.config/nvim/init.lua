@@ -43,6 +43,8 @@ Plug 'neovim/nvim-lspconfig'
 -- Completion manager
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'L3MON4D3/LuaSnip'        -- Snippet engine (required for most cmp setups)
 -- Plug 'ncm2/ncm2'
 -- Plug 'roxma/nvim-yarp'
 
@@ -200,3 +202,70 @@ colorscheme codedark
 -- Treesitter enable highlight on each new buffer
 -- ??
 vim.g.NERDTreeShowHidden = 1
+
+-- Check if we are running in WSL
+local is_wsl = (function()
+    local handle = io.popen("uname -r")
+    if handle then
+        local result = handle:read("*a")
+        handle:close()
+        return result:lower():find("microsoft") ~= nil
+    end
+    return false
+end)()
+
+
+-- Latex
+
+if is_wsl then
+    -- SumatraPDF path (WSL path to the Windows .exe)
+    local sumatra_path = '/mnt/c/Users/MichaelLuu/AppData/Local/SumatraPDF/SumatraPDF.exe'
+    
+    vim.g.vimtex_view_general_viewer = sumatra_path
+    vim.g.vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
+end
+
+
+-- Auto-compile on save (Vimtex does this by default with latexmk)
+vim.g.vimtex_compiler_method = 'latexmk'
+
+-- Latex LSP
+vim.lsp.enable('texlab')
+
+vim.lsp.config['texlab'] = {
+  settings = {
+    texlab = {
+      completion = {
+        matcher = "prefix",
+        -- Allow vimtex to handle completions if you prefer
+        vimtex = { enabled = true }
+      }
+    }
+  }
+}
+
+
+-- Completion manager
+
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), 
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+
