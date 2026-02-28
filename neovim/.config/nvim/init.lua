@@ -34,6 +34,9 @@ Plug ('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
 -- Plug 'jiangmiao/auto-pairs' 
 Plug 'Raimondi/delimitMate'
 
+-- Latex
+Plug 'lervag/vimtex'
+
 -- LSP
 Plug 'neovim/nvim-lspconfig'
 
@@ -164,8 +167,8 @@ nmap('<F8>', ':let mycurf=expand("<cfile>")<cr><c-w>p:execute("e ".mycurf)<cr>')
 -- Staggering increment start by one,
 -- because I only use it to convert 1. 1. ... into 1. 2. ...
 --vnoremap g<C-a> g<C-a>gv<C-x><Esc>
-vmap('g<C-a>', 'g<C-a>gv<C-x><Esc>')
-vmap('g<C-x>', 'g<C-x>gv<C-a><Esc>')
+-- vmap('g<C-a>', 'g<C-a>gv<C-x><Esc>')
+-- vmap('g<C-x>', 'g<C-x>gv<C-a><Esc>')
 
 ---- Single insert commands
 --
