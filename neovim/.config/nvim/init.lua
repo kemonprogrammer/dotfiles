@@ -1,3 +1,9 @@
+-- Stop jumping from warnings
+vim.opt.signcolumn = "yes"
+
+-- Needs to be done before plugins
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 ----  Plugins  ----
 local Plug = vim.fn['plug#']
@@ -36,6 +42,7 @@ Plug 'Raimondi/delimitMate'
 
 -- Latex
 Plug 'lervag/vimtex'
+Plug 'nvim-telescope/telescope-bibtex.nvim'
 
 -- LSP
 Plug 'neovim/nvim-lspconfig'
@@ -52,6 +59,10 @@ Plug 'L3MON4D3/LuaSnip'        -- Snippet engine (required for most cmp setups)
 -- our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
 -- Plug 'ncm2/ncm2-bufword'
 -- Plug 'ncm2/ncm2-path'
+
+Plug 'nvim-lua/plenary.nvim'
+Plug ('nvim-telescope/telescope.nvim', { tag = '0.1.x' })
+Plug ('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = 'make' })
 
 -- File explorer
 Plug 'preservim/nerdtree'
@@ -101,6 +112,7 @@ vim.opt.shiftwidth = 2
 function map(mode, shortcut, command)
     vim.api.nvim_set_keymap(mode, shortcut, command, {noremap = true})
 end
+
 
 -- #TODO overload functions to optionally pass options {} as 3rd parameter
 function nmap(shortcut, command)
@@ -192,12 +204,15 @@ nmap('<F8>', ':let mycurf=expand("<cfile>")<cr><c-w>p:execute("e ".mycurf)<cr>')
 -- vscode-like colorscheme
 --colorscheme codedark
 --vim.g.colorscheme = 'codedark'
+vim.opt.termguicolors = true
 vim.cmd([[
 colorscheme codedark
 ]])
 
 -- jetbrains-like colorscheme
 --colorscheme darcula
+
+
 
 -- Treesitter enable highlight on each new buffer
 -- ??
@@ -213,6 +228,14 @@ local is_wsl = (function()
     end
     return false
 end)()
+
+-- Telescope
+local builtin = require('telescope.builtin')
+
+-- The "Standard" Neovim style (highly recommended)
+vim.keymap.set('n', '<C-p>', builtin.find_files, {})
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find Files' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Search Text in Files' })
 
 
 -- Latex
