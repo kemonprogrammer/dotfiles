@@ -215,7 +215,16 @@ colorscheme codedark
 --colorscheme darcula
 
 
---
+-- --- Filetype specific ---
+-- .tex files visual jk
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "tex",
+  callback = function()
+    vim.keymap.set('n', 'j', 'gj', { buffer = true })
+    vim.keymap.set('n', 'k', 'gk', { buffer = true })
+  end,
+})
+
 -- Autocommand to make specific buffers closeable with 'q'
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "fugitive", "lspinfo", "git", "help", "man" },
