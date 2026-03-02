@@ -1,5 +1,4 @@
--- Stop jumping left gutter from warnings
-vim.opt.signcolumn = "yes"
+-- Stop jumping left gutter from warnings vim.opt.signcolumn = "yes"
 
 -- Auto suggestions command mode
 vim.opt.wildmenu = true
@@ -71,6 +70,10 @@ Plug 'gelguy/wilder.nvim'
 -- Plug 'ncm2/ncm2-bufword'
 -- Plug 'ncm2/ncm2-path'
 
+-- Project based
+Plug 'ahmedkhalf/project.nvim'
+
+-- File finder
 Plug 'nvim-lua/plenary.nvim'
 Plug ('nvim-telescope/telescope.nvim', { tag = '0.1.x' })
 Plug ('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = 'make' })
@@ -229,7 +232,7 @@ colorscheme codedark
 --colorscheme darcula
 
 
--- 
+--
 -- Autocommand to make specific buffers closeable with 'q'
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "fugitive", "lspinfo", "git", "help", "man" },
@@ -254,16 +257,47 @@ local is_wsl = (function()
     return false
 end)()
 
--- Telescope
+
+
+-- Project based
+
+require("project_nvim").setup({
+  -- Manual mode doesn't change the root automatically unless you tell it to
+  -- "pattern" is usually better as it looks for .git
+  detection_methods = { "pattern" },
+  patterns = { ".git", "Makefile", "package.json" },
+  silent_chdir = false, -- Set to true if you don't want a message when the dir changes
+})
+
+vim.keymap.set('n', '<leader>fp', function()
+    require('telescope').extensions.projects.projects()
+end, { desc = "Find Projects" })
+
+
+-- --- Telescope ---
+
+local actions = require("telescope.actions")
+
+require('telescope').setup{
+  defaults = {
+    mappings = {
+      i = {
+        ["<esc>"] = actions.close,      -- Close on first Esc
+        ["<C-c>"] = actions.close,      -- Close on first
+        -- ["<C-c>"] = { "<esc>", type = "command" }, -- Ctrl-C to enter Normal Mode
+      },
+    },
+  },
+}
+
 local builtin = require('telescope.builtin')
 
--- The "Standard" Neovim style (highly recommended)
 vim.keymap.set('n', '<C-p>', builtin.find_files, {})
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find file' })
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Search text in files' })
 
 
--- Latex
+-- --- Latex ---
 
 if is_wsl then
     -- SumatraPDF path (WSL path to the Windows .exe)
@@ -293,7 +327,7 @@ vim.lsp.config['texlab'] = {
 }
 
 
--- LSP
+-- --- LSP ---
 
 require("mason").setup()
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -317,6 +351,14 @@ vim.lsp.config['lua-language-server'] = {
     },
   },
 }
+
+-- disable lsp in Telescope
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "TelescopePrompt",
+  callback = function()
+    vim.diagnostic.enable(false, { bufnr = 0 })
+  end,
+})
 
 vim.lsp.enable('lua-language-server')
 
@@ -353,33 +395,14 @@ cmp.setup({
 local wilder = require('wilder')
 wilder.setup({modes = {':'}})
 
+-- vertical menu
 wilder.set_option('renderer', wilder.popupmenu_renderer(
-  -- wilder.popupmenu_border_theme({
-  --   -- 'highlighter' apply colors to the matched text
-  --   highlighter = wilder.basic_highlighter(),
-
-  --   -- Set the highlights for the menu colors
-  --   highlights = {
-  --     border = 'Normal', -- border color
-  --   },
-
-  --   -- can be 'single', 'double', 'rounded' or 'solid'
-  --   border = '',
-
-  --   max_height = '20%',
-
-  --   -- min_width = '100%',
-
-  --   -- Use the default prompt (usually at the bottom)
-  --   reverse = false,
-  -- })
 ))
 
 
--- Git
+-- --- Git ---
 
--- Fugitive
--- Open the Fugitive status window
+-- --- Fugitive ---
 vim.keymap.set("n", "<leader>gs", "<cmd>Git<CR>")
 vim.keymap.set("n", "<leader>gd", "<cmd>Gvdiffsplit<CR>")
 vim.keymap.set("n", "<leader>gc", "<cmd>Git commit<CR>")
@@ -389,7 +412,7 @@ vim.keymap.set("n", "<leader>gb", "<cmd>Git blame<CR>")
 vim.keymap.set("n", "<leader>gr", "<cmd>Gread<CR>")
 vim.keymap.set("n", "<leader>gw", "<cmd>Gwrite<CR>")
 
--- Git signs
+-- --- Git signs ---
 require('gitsigns').setup{
   on_attach = function(bufnr)
     local gitsigns = require('gitsigns')
@@ -455,3 +478,13 @@ require('gitsigns').setup{
     map({'o', 'x'}, 'ih', gitsigns.select_hunk)
   end
 }
+
+-- o only adds indentation, and not a comment
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
+  callback = function()
+    -- 'o' removes comment leader insertion on 'o'/'O'
+    -- 'r' removes comment leader insertion on <Enter> in Insert mode
+    vim.opt_local.formatoptions:remove({ "o" })
+  end,
+})
