@@ -73,6 +73,10 @@ Plug 'L3MON4D3/LuaSnip'        -- Snippet engine (required for most cmp setups)
 -- Project based
 Plug 'ahmedkhalf/project.nvim'
 
+-- Dashboard & Icons
+Plug 'goolord/alpha-nvim'
+Plug 'nvim-tree/nvim-web-devicons'
+
 -- File finder
 Plug 'nvim-lua/plenary.nvim'
 Plug ('nvim-telescope/telescope.nvim', { tag = '0.1.x' })
@@ -104,7 +108,6 @@ vim.opt.shiftwidth = 2
 -- #TODO vim to lua
 
 
--- #TODO
 -- ----  File Explorer  ----
 -- --- NERDTree ---
 --
@@ -122,36 +125,16 @@ vim.opt.shiftwidth = 2
 -- autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
 --     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
+
+
 -- --- Mappings ---
-function map(mode, shortcut, command)
-    vim.api.nvim_set_keymap(mode, shortcut, command, {noremap = true})
-end
-
-
--- #TODO overload functions to optionally pass options {} as 3rd parameter
-function nmap(shortcut, command)
-    map('n', shortcut, command)
-end
-
-
-
-function imap(shortcut, command)
-    map('i', shortcut, command)
-end
-
-function vmap(shortcut, command)
-    map('v', shortcut, command)
-end
 -- Disable CTRL + c message
--- #TODO replace with set command
 vim.api.nvim_set_keymap('n', '<C-c>', '<Esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('i', '<C-c>', '<Esc>', { noremap = true, silent = true })
 
--- CTRL + S to save
---nnoremap <silent> <C-S> :update<CR>
-nmap('<C-S>', ':update<CR>')
---vnoremap <silent> <C-S> <ESC>:update<CR>gv
-vmap('<C-S>', '<ESC>:update<CR>gv')
+-- CTRL-S to save
+vim.api.nvim_set_keymap('n', '<C-s>', '<cmd>update<CR>', { desc = 'Save'})
+vim.api.nvim_set_keymap('v', '<C-s>', '<cmd>update<CR>', { desc = 'Save'})
 ---- TODO: try neovims beta feature CTRL+S
 --inoremap <silent> <C-S> <C-O>:update<CR>
 --imap('<C-s>', '<C-O>:update<CR>')
@@ -195,7 +178,7 @@ end, { desc = 'Source init.lua' })
 --- etc
 ---- Open file under cursor in split window
 --nnoremap <F8> :let mycurf=expand("<cfile>")<cr><c-w>p:execute("e ".mycurf)<cr>
-nmap('<F8>', ':let mycurf=expand("<cfile>")<cr><c-w>p:execute("e ".mycurf)<cr>')
+vim.keymap.set('n', '<F8>', ':let mycurf=expand("<cfile>")<cr><c-w>p:execute("e ".mycurf)<cr>')
 
 -- Staggering increment start by one,
 -- because I only use it to convert 1. 1. ... into 1. 2. ...
@@ -260,6 +243,21 @@ end)()
 
 
 -- Project based
+
+-- Dashboard
+local alpha = require("alpha")
+local dashboard = require("alpha.themes.theta")
+-- dashboard.buttons.val = {
+--     -- dashboard.button("t", "󰈙  Open Thesis Project", function() open_thesis() end),
+--     dashboard.button("p", "󱔗  Recent Projects", ":Telescope projects<CR>"),
+--     dashboard.button("f", "󰈞  Find File", ":Telescope find_files<CR>"),
+--     dashboard.button("g", "󰊄  Live Grep", ":Telescope live_grep<CR>"),
+--     dashboard.button("q", "󰅚  Quit", ":qa<CR>"),
+-- }
+
+alpha.setup(dashboard.config)
+
+-- Project.nvim
 
 require("project_nvim").setup({
   -- Manual mode doesn't change the root automatically unless you tell it to
@@ -327,6 +325,7 @@ vim.lsp.config['texlab'] = {
 }
 
 
+
 -- --- LSP ---
 
 require("mason").setup()
@@ -366,6 +365,7 @@ vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<CR>")
 vim.keymap.set("n", "<leader>ls", "<cmd>LspStart<CR>")
 vim.keymap.set("n", "<leader>le", "<cmd>LspStop<CR>")
 
+
 -- --- Completion manager ---
 
 local cmp = require("cmp")
@@ -395,7 +395,8 @@ cmp.setup({
 
 -- --- Fugitive ---
 vim.keymap.set("n", "<leader>gs", "<cmd>Git<CR>")
-vim.keymap.set("n", "<leader>gd", "<cmd>Gvdiffsplit<CR>")
+vim.keymap.set("n", "<leader>gdd", "<cmd>Gvdiffsplit<CR>")
+vim.keymap.set("n", "<leader>gds", "<cmd>Gvdiffsplit !<CR>")
 vim.keymap.set("n", "<leader>gc", "<cmd>Git commit<CR>")
 vim.keymap.set("n", "<leader>gp", "<cmd>Git push<CR>")
 vim.keymap.set("n", "<leader>gl", "<cmd>Git pull<CR>")
