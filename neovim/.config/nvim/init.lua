@@ -479,3 +479,14 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.formatoptions:remove({ "o" })
   end,
 })
+
+
+-- --- Explorer ---
+if is_wsl then
+  vim.keymap.set("n", "<leader>e", "<cmd>silent !explorer.exe $(wslpath -w %:p:h)<CR>",
+  { desc = "Open current file in explorer" })
+else
+  vim.keymap.set("n", "<leader>e", "<cmd>silent !xdg-open %:p:h<CR>",
+  { desc = "Open current file in explorer" })
+end
+
