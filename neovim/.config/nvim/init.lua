@@ -229,6 +229,15 @@ colorscheme codedark
 --colorscheme darcula
 
 
+-- 
+-- Autocommand to make specific buffers closeable with 'q'
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "fugitive", "lspinfo", "git", "help", "man" },
+  callback = function(args)
+    vim.keymap.set('n', 'q', '<cmd>close<CR>', { buffer = args.buf, silent = true })
+  end,
+})
+
 
 -- Treesitter enable highlight on each new buffer
 -- ??
@@ -311,6 +320,9 @@ vim.lsp.config['lua-language-server'] = {
 
 vim.lsp.enable('lua-language-server')
 
+vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<CR>")
+vim.keymap.set("n", "<leader>ls", "<cmd>LspStart<CR>")
+vim.keymap.set("n", "<leader>le", "<cmd>LspStop<CR>")
 
 -- Completion manager
 
