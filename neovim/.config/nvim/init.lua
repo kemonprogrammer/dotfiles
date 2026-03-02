@@ -420,6 +420,10 @@ require('gitsigns').setup{
         vim.cmd.normal({']c', bang = true})
       else
         gitsigns.nav_hunk('next')
+        -- autocenter after
+        vim.defer_fn(function()
+          vim.cmd("normal! zz")
+        end, 10) -- 10ms
       end
     end)
 
@@ -428,6 +432,10 @@ require('gitsigns').setup{
         vim.cmd.normal({'[c', bang = true})
       else
         gitsigns.nav_hunk('prev')
+        -- autocenter after
+        vim.defer_fn(function()
+          vim.cmd("normal! zz")
+        end, 10) -- 10ms
       end
     end)
 
