@@ -153,20 +153,22 @@ vmap('<C-S>', '<ESC>:update<CR>gv')
 --inoremap <silent> <C-S> <C-O>:update<CR>
 --imap('<C-s>', '<C-O>:update<CR>')
 
---
+
 ---- Leader shortcuts
 --nnoremap <leader>ee :NERDTreeFocus<CR>
 --nnoremap <leader>et :NERDTreeToggle<CR>
 ---- nmap <Leader>fzf :Files<CR>
 --nmap <Leader>f :GFiles<CR>
+
 vim.keymap.set('n', '<leader>pc', '<cmd>PlugClean<CR>', { desc = 'Plug Clean' })
 vim.keymap.set('n', '<leader>pi', '<cmd>PlugInstall<CR>', { desc = 'Plug Install' })
 vim.keymap.set('n', '<leader>pu', '<cmd>PlugUpdate<CR>', { desc = 'Plug Update' })
 vim.keymap.set('n', '<leader>so', function()
   vim.cmd('source ' .. vim.env.MYVIMRC)
-  print("Neovim config sourced")
+  print("Sourced")
 end, { desc = 'Source init.lua' })
---
+
+
 ---- Autocenter
 ----nnoremap G Gzz
 --nmap('G', 'Gzz')
@@ -289,6 +291,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 vim.lsp.config['lua-language-server'] = {
   cmd = { vim.fn.expand("~/.local/share/nvim/mason/bin/lua-language-server") },
+  filetypes = { "lua" },
   capabilities = capabilities,
   settings = {
     Lua = {
@@ -362,6 +365,17 @@ wilder.set_option('renderer', wilder.popupmenu_renderer(
 
 
 -- Git
+
+-- Fugitive
+-- Open the Fugitive status window
+vim.keymap.set("n", "<leader>gs", "<cmd>Git<CR>")
+vim.keymap.set("n", "<leader>gd", "<cmd>Gvdiffsplit<CR>")
+vim.keymap.set("n", "<leader>gc", "<cmd>Git commit<CR>")
+vim.keymap.set("n", "<leader>gp", "<cmd>Git push<CR>")
+vim.keymap.set("n", "<leader>gl", "<cmd>Git pull<CR>")
+vim.keymap.set("n", "<leader>gb", "<cmd>Git blame<CR>")
+vim.keymap.set("n", "<leader>gr", "<cmd>Gread<CR>")
+vim.keymap.set("n", "<leader>gw", "<cmd>Gwrite<CR>")
 
 -- Git signs
 require('gitsigns').setup{
