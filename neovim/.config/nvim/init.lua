@@ -319,8 +319,7 @@ end
 -- Auto-compile on save (Vimtex does this by default with latexmk)
 vim.g.vimtex_compiler_method = 'latexmk'
 
--- Latex LSP
-vim.lsp.enable('texlab')
+-- --- Latex LSP --- 
 
 vim.lsp.config['texlab'] = {
   settings = {
@@ -334,7 +333,37 @@ vim.lsp.config['texlab'] = {
   }
 }
 
+vim.lsp.enable('texlab')
 
+
+-- Writing
+
+vim.lsp.config['ltex'] = {
+  filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "tex", "pandoc" },
+  flags = {
+    debounce_text_changes = 300,
+    exit_timeout = false,
+  },
+  settings = {
+    ltex = {
+      language = "de-DE",
+      additionalRules = {
+        enablePickyRules = true,
+      },
+      langauge = {
+        commands = {
+          svgsetup = "ignore",
+          svgpath = "ignore",
+          hyphenation = "ignore",
+          usepackage = "ignore",
+        },
+      }
+    }
+  }
+}
+
+
+vim.lsp.enable('ltex')
 
 -- --- LSP ---
 
