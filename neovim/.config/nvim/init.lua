@@ -61,7 +61,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'L3MON4D3/LuaSnip'        -- Snippet engine (required for most cmp setups)
 
-Plug 'gelguy/wilder.nvim'
+-- Plug 'gelguy/wilder.nvim'   -- blocks main thread, can't ignore system commands `!`
 -- Plug 'ncm2/ncm2'
 -- Plug 'roxma/nvim-yarp'
 
@@ -366,7 +366,7 @@ vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<CR>")
 vim.keymap.set("n", "<leader>ls", "<cmd>LspStart<CR>")
 vim.keymap.set("n", "<leader>le", "<cmd>LspStop<CR>")
 
--- Completion manager
+-- --- Completion manager ---
 
 local cmp = require("cmp")
 
@@ -389,15 +389,6 @@ cmp.setup({
     { name = 'buffer' },
   })
 })
-
-
--- Completion for command line
-local wilder = require('wilder')
-wilder.setup({modes = {':'}})
-
--- vertical menu
-wilder.set_option('renderer', wilder.popupmenu_renderer(
-))
 
 
 -- --- Git ---
