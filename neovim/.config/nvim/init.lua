@@ -18,6 +18,7 @@ vim.call('plug#begin')
 -- surround.vim
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-unimpaired'
 
 -- colorschemes
 Plug 'tomasiser/vim-code-dark'
@@ -155,6 +156,14 @@ vim.keymap.set('n', '<leader>so', function()
 end, { desc = 'Source init.lua' })
 
 
+local function make_repeatable(key, action)
+  return function()
+    action()
+    vim.fn['repeat#set'](vim.api.nvim_replace_termcodes(key, true, false, true))
+  end
+end
+
+
 ---- Autocenter
 ----nnoremap G Gzz
 --nmap('G', 'Gzz')
@@ -227,7 +236,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Autocommand to make specific buffers closeable with 'q'
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "fugitive", "lspinfo", "git", "help", "man" },
+  pattern = { "fugitive", "lspinfo", "git", "help", "man", "gitsigns.diff", },
   callback = function(args)
     vim.keymap.set('n', 'q', '<cmd>close<CR>', { buffer = args.buf, silent = true })
   end,
@@ -401,8 +410,9 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.lsp.enable('lua-language-server')
 
 vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<CR>")
-vim.keymap.set("n", "<leader>ls", "<cmd>LspStart<CR>")
-vim.keymap.set("n", "<leader>le", "<cmd>LspStop<CR>")
+vim.keymap.set("n", "<leader>ls", "<cmd>LspStart<CR>", { desc = "LSP started" })
+vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "LSP restarted" })
+vim.keymap.set("n", "<leader>le", "<cmd>LspStop<CR>", { desc = "LSP stopped" })
 
 
 -- --- Completion manager ---
@@ -444,6 +454,21 @@ vim.keymap.set("n", "<leader>gr", "<cmd>Gread<CR>")
 vim.keymap.set("n", "<leader>gw", "<cmd>Gwrite<CR>")
 
 -- --- Git signs ---
+
+
+-- Define the Hunk Navigation Logic
+local function nav_hunk(dir)
+  local gitsigns = require('gitsigns')
+  if vim.wo.diff then
+    -- Use [[ and ]] to escape the brackets in strings if needed
+    vim.cmd('normal! ' .. (dir == 'next' and ']c' or '[c'))
+  else
+    gitsigns.nav_hunk(dir)
+  end
+  -- Center immediately after jump -- Doesn't work yet
+  vim.cmd("normal! zz")
+end
+
 require('gitsigns').setup{
   on_attach = function(bufnr)
     local gitsigns = require('gitsigns')
@@ -455,17 +480,9 @@ require('gitsigns').setup{
     end
 
     -- Navigation
-    map('n', ']c', function()
-      if vim.wo.diff then
-        vim.cmd.normal({']c', bang = true})
-      else
-        gitsigns.nav_hunk('next')
-        -- autocenter after
-        vim.defer_fn(function()
-          vim.cmd("normal! zz")
-        end, 10) -- 10ms
-      end
-    end)
+    map('n', ']c', make_repeatable(']c', function()
+      nav_hunk('next')
+    end), { desc = "Next hunk (repeatable)"})
 
     map('n', '[c', function()
       if vim.wo.diff then
