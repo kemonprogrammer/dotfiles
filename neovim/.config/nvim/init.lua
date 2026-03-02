@@ -314,6 +314,74 @@ vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Search text in fi
 vim.keymap.set('n', '<C-g>', builtin.live_grep, {})
 
 
+
+-- --- LSP ---
+
+require("mason").setup()
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+vim.lsp.config['lua-language-server'] = {
+  cmd = { vim.fn.expand("~/.local/share/nvim/mason/bin/lua-language-server") },
+  filetypes = { "lua" },
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      runtime = { version = 'LuaJIT' },
+      diagnostics = {
+        globals = { 'vim' }, -- Fix the "Undefined global 'vim'" warning
+      },
+      workspace = {
+        -- Make the server aware of Neovim runtime files
+        library = vim.api.nvim_get_runtime_file("", true),
+        checkThirdParty = false,
+      },
+      telemetry = { enable = false },
+    },
+  },
+}
+
+vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<CR>")
+vim.keymap.set("n", "<leader>ls", "<cmd>LspStart<CR>", { desc = "LSP started" })
+vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "LSP restarted" })
+vim.keymap.set("n", "<leader>le", "<cmd>LspStop<CR>", { desc = "LSP stopped" })
+vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Rename symbol" })
+
+-- disable lsp in Telescope
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "TelescopePrompt",
+  callback = function()
+    vim.diagnostic.enable(false, { bufnr = 0 })
+  end,
+})
+
+vim.lsp.enable('lua-language-server')
+
+
+-- --- Completion manager ---
+
+local cmp = require("cmp")
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+
 -- --- Latex ---
 
 if is_wsl then
@@ -373,71 +441,6 @@ vim.lsp.config['ltex'] = {
 
 
 vim.lsp.enable('ltex')
-
--- --- LSP ---
-
-require("mason").setup()
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-vim.lsp.config['lua-language-server'] = {
-  cmd = { vim.fn.expand("~/.local/share/nvim/mason/bin/lua-language-server") },
-  filetypes = { "lua" },
-  capabilities = capabilities,
-  settings = {
-    Lua = {
-      runtime = { version = 'LuaJIT' },
-      diagnostics = {
-        globals = { 'vim' }, -- Fix the "Undefined global 'vim'" warning
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true),
-        checkThirdParty = false,
-      },
-      telemetry = { enable = false },
-    },
-  },
-}
-
--- disable lsp in Telescope
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "TelescopePrompt",
-  callback = function()
-    vim.diagnostic.enable(false, { bufnr = 0 })
-  end,
-})
-
-vim.lsp.enable('lua-language-server')
-
-vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<CR>")
-vim.keymap.set("n", "<leader>ls", "<cmd>LspStart<CR>", { desc = "LSP started" })
-vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "LSP restarted" })
-vim.keymap.set("n", "<leader>le", "<cmd>LspStop<CR>", { desc = "LSP stopped" })
-
-
--- --- Completion manager ---
-
-local cmp = require("cmp")
-
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      require('luasnip').lsp_expand(args.body)
-    end,
-  },
-  mapping = cmp.mapping.preset.insert({
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-e>'] = cmp.mapping.abort(),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  }),
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-  }, {
-    { name = 'buffer' },
-  })
-})
 
 
 -- --- Git ---
