@@ -299,4 +299,8 @@ fi
 if [ -d "/mnt/wslg" ] && [ ! -S "$XDG_RUNTIME_DIR/wayland-0" ]; then
     ln -sf /mnt/wslg/runtime-dir/wayland-0* "$XDG_RUNTIME_DIR/"
 fi
-. "$HOME/.cargo/env"
+
+if [ -e "$HOME/.cargo/env" ]; then
+    . "$HOME/.cargo/env"
+fi
+
