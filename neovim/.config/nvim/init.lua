@@ -60,7 +60,10 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
+-- Snippets
 Plug 'L3MON4D3/LuaSnip'        -- Snippet engine (required for most cmp setups)
+Plug 'saadparwaiz1/cmp_luasnip' -- Bridge between LuaSnip and nvim-cmp
+Plug 'rafamadriz/friendly-snippets'
 
 -- Plug 'gelguy/wilder.nvim'   -- blocks main thread, can't ignore system commands `!`
 -- Plug 'ncm2/ncm2'
@@ -358,13 +361,15 @@ vim.lsp.enable('lua-language-server')
 
 
 -- --- Completion manager ---
+require("luasnip.loaders.from_vscode").lazy_load()
 
 local cmp = require("cmp")
+local luasnip = require("luasnip")
 
 cmp.setup({
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body)
+      luasnip.lsp_expand(args.body)
     end,
   },
   mapping = cmp.mapping.preset.insert({
@@ -372,10 +377,31 @@ cmp.setup({
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-e>'] = cmp.mapping.abort(),
     ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<CR>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        -- If a snippet is selected, expand it. Otherwise, confirm the text.
+        if luasnip.expandable() then
+          luasnip.expand()
+        else
+          cmp.confirm({ select = true })
+        end
+      else
+        fallback() -- Crucial! Lets other plugins (like autopairs) use the Enter key.
+      end
+    end),
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
+    { name = 'luasnip' }, -- This makes the snippets show up in the menu
   }, {
     { name = 'buffer' },
   })
