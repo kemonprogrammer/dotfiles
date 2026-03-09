@@ -343,6 +343,7 @@ vim.lsp.config['lua-language-server'] = {
   },
 }
 
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'LSP help documentation' })
 vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<CR>")
 vim.keymap.set("n", "<leader>ls", "<cmd>LspStart<CR>", { desc = "LSP started" })
 vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "LSP restarted" })
