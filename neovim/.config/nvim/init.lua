@@ -51,6 +51,7 @@ Plug 'lewis6991/gitsigns.nvim'
 -- Latex
 Plug 'lervag/vimtex'
 Plug 'nvim-telescope/telescope-bibtex.nvim'
+Plug 'barreiroleo/ltex_extra.nvim'  -- add dictionary for latex language server
 
 -- LSP
 Plug 'mason-org/mason.nvim'
@@ -83,7 +84,7 @@ Plug 'nvim-tree/nvim-web-devicons'
 
 -- File finder
 Plug 'nvim-lua/plenary.nvim'
-Plug ('nvim-telescope/telescope.nvim', { tag = '0.1.x' })
+Plug ('nvim-telescope/telescope.nvim', { ['branch'] = 'master' })
 Plug ('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = 'make' })
 
 -- File explorer
@@ -227,23 +228,6 @@ colorscheme codedark
 --colorscheme darcula
 
 
--- --- Filetype specific ---
--- .tex files visual jk
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "tex",
-  callback = function()
-    vim.keymap.set('n', 'j', 'gj', { buffer = true })
-    vim.keymap.set('n', 'k', 'gk', { buffer = true })
-  end,
-})
-
--- Autocommand to make specific buffers closeable with 'q'
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "fugitive", "lspinfo", "git", "help", "man", "gitsigns.diff", },
-  callback = function(args)
-    vim.keymap.set('n', 'q', '<cmd>close<CR>', { buffer = args.buf, silent = true })
-  end,
-})
 
 
 -- Treesitter enable highlight on each new buffer
@@ -293,12 +277,38 @@ vim.keymap.set('n', '<leader>fp', function()
 end, { desc = "Find Projects" })
 
 
+
 -- --- Telescope ---
+
+local builtin = require('telescope.builtin')
+
+vim.keymap.set('n', '<C-p>', builtin.find_files, {})
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find file' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Search text in files' })
+vim.keymap.set('n', '<C-g>', builtin.live_grep, {})
+
+-- -- doesn't work
+-- -- custom highlights, regardless of the colorscheme
+-- vim.api.nvim_create_autocmd("ColorScheme", {
+--   pattern = "*",
+--   callback = function()
+--     -- Clear the background of the selected line in preview (removes the big blue block)
+--     vim.api.nvim_set_hl(0, "TelescopePreviewLine", { bg = "NONE", fg = "NONE" })
+
+--     -- Highlight the exact search match
+--     vim.api.nvim_set_hl(0, "TelescopePreviewMatch", { bg = "#e5c07b", fg = "#282c34", bold = true })
+--   end,
+-- })
+-- vim.cmd("doautocmd ColorScheme")
 
 local actions = require("telescope.actions")
 
 require('telescope').setup{
   defaults = {
+    preview = {
+      treesitter = false,
+    },
+    -- wrap_results = true,
     mappings = {
       i = {
         ["<esc>"] = actions.close,      -- Close on first Esc
@@ -309,12 +319,21 @@ require('telescope').setup{
   },
 }
 
-local builtin = require('telescope.builtin')
+-- disable lsp and search highlight in Telescope prompt
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "TelescopePrompt",
+  callback = function()
+    vim.diagnostic.enable(false, { bufnr = 0 })
+    -- vim.opt_local.winhighlight:append("Search:None,IncSearch:None")
+  end,
+})
 
-vim.keymap.set('n', '<C-p>', builtin.find_files, {})
-vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find file' })
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Search text in files' })
-vim.keymap.set('n', '<C-g>', builtin.live_grep, {})
+vim.api.nvim_create_autocmd("User", {
+  pattern = "TelescopePreviewerLoaded",
+  callback = function()
+    vim.opt_local.wrap = true
+  end,
+})
 
 
 
@@ -348,17 +367,37 @@ vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<CR>")
 vim.keymap.set("n", "<leader>ls", "<cmd>LspStart<CR>", { desc = "LSP started" })
 vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "LSP restarted" })
 vim.keymap.set("n", "<leader>le", "<cmd>LspStop<CR>", { desc = "LSP stopped" })
+vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action , { desc = "LTeX: Add word to dictionary" })
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Rename symbol" })
 
--- disable lsp in Telescope
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "TelescopePrompt",
-  callback = function()
-    vim.diagnostic.enable(false, { bufnr = 0 })
+vim.lsp.enable('lua-language-server')
+
+-- Fix ltex race condition, by only initializing it once
+-- also when opening up telescope immediately it shouldn't throws an error
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("LtexExtraSafeSetup", { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+    if client and client.name == "ltex" then
+      -- Push the setup to the end of the event loop
+      vim.schedule(function()
+        -- CRITICAL: Abort if Telescope (or anything else) stole focus
+        if vim.api.nvim_get_current_buf() == args.buf then
+          -- Wrap in pcall to silently swallow any residual plugin panics
+          pcall(function()
+            require("ltex_extra").setup({
+              load_langs = { "de-DE" },
+              init_check = true,
+              path = vim.fn.expand("~/.config/nvim/spell"), -- dictionary location
+              log_level = "error",
+            })
+          end)
+        end
+      end)
+    end
   end,
 })
-
-vim.lsp.enable('lua-language-server')
 
 
 -- --- Completion manager ---
@@ -585,3 +624,28 @@ else
   { desc = "Open current file in explorer" })
 end
 
+-- --- Filetype specific ---
+-- autocmd keymap overrides have to be AFTER global overrides
+-- .tex files visual jk
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "tex", "markdown", "plaintex", },
+  callback = function()
+    vim.keymap.set('n', 'j', 'gj', { buffer = true })
+    vim.keymap.set('n', 'k', 'gk', { buffer = true })
+    vim.keymap.set('n', '<leader>ca', function()
+      -- This triggers the code action specifically for ltex
+      vim.lsp.buf.code_action({
+        filter = function(a) return a.title:match("Add .* to dictionary") end,
+        apply = true,
+      })
+    end , { desc = "LTeX: Add word to dictionary" })
+  end,
+})
+
+-- Autocommand to make specific buffers closeable with 'q'
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "fugitive", "lspinfo", "git", "help", "man", "gitsigns.diff", },
+  callback = function(args)
+    vim.keymap.set('n', 'q', '<cmd>close<CR>', { buffer = args.buf, silent = true })
+  end,
+})
