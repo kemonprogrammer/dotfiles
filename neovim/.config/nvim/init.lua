@@ -57,6 +57,10 @@ Plug 'barreiroleo/ltex_extra.nvim'  -- add dictionary for latex language server
 Plug 'mason-org/mason.nvim'
 Plug 'neovim/nvim-lspconfig'
 
+-- LSP Lua
+Plug ('folke/lazydev.nvim', { ['for'] = 'lua' })
+Plug 'Bilal2453/luvit-meta'
+
 -- Completion manager
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -229,7 +233,6 @@ colorscheme codedark
 
 
 
-
 -- Treesitter enable highlight on each new buffer
 -- ??
 vim.g.NERDTreeShowHidden = 1
@@ -340,37 +343,46 @@ vim.api.nvim_create_autocmd("User", {
 -- --- LSP ---
 
 require("mason").setup()
+vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<CR>")
+vim.keymap.set("n", "<leader>ls", "<cmd>LspStart<CR>", { desc = "LSP started" })
+vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "LSP restarted" })
+vim.keymap.set("n", "<leader>le", "<cmd>LspStop<CR>", { desc = "LSP stopped" })
+vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Rename symbol" })
+
+
+-- Lua Lsp types, needs to be set up before lua-ls
+require("lazydev").setup({
+  library = {
+    { path = "luvit-meta/library", words = { "vim%.uv" } },
+  },
+})
+
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-vim.lsp.config['lua-language-server'] = {
+vim.lsp.config['lua_ls'] = {
   cmd = { vim.fn.expand("~/.local/share/nvim/mason/bin/lua-language-server") },
   filetypes = { "lua" },
   capabilities = capabilities,
+
+  root_dir = function()
+    return vim.fn.getcwd()
+  end,
   settings = {
     Lua = {
       runtime = { version = 'LuaJIT' },
       diagnostics = {
         globals = { 'vim' }, -- Fix the "Undefined global 'vim'" warning
       },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true),
-        checkThirdParty = false,
-      },
+      -- workspace = {
+      --   -- Make the server aware of Neovim runtime files
+      --   library = vim.api.nvim_get_runtime_file("", true),
+      --   checkThirdParty = false,
+      -- },
       telemetry = { enable = false },
     },
   },
 }
 
-vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'LSP help documentation' })
-vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<CR>")
-vim.keymap.set("n", "<leader>ls", "<cmd>LspStart<CR>", { desc = "LSP started" })
-vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "LSP restarted" })
-vim.keymap.set("n", "<leader>le", "<cmd>LspStop<CR>", { desc = "LSP stopped" })
-vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action , { desc = "LTeX: Add word to dictionary" })
-vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Rename symbol" })
-
-vim.lsp.enable('lua-language-server')
 
 -- Fix ltex race condition, by only initializing it once
 -- also when opening up telescope immediately it shouldn't throws an error
@@ -399,6 +411,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+vim.lsp.enable('lua_ls')
 
 -- --- Completion manager ---
 require("luasnip.loaders.from_vscode").lazy_load()
@@ -461,6 +474,39 @@ end
 
 -- Auto-compile on save (Vimtex does this by default with latexmk)
 vim.g.vimtex_compiler_method = 'latexmk'
+vim.g.vimtex_quickfix_open_on_warning = 0
+
+vim.keymap.set('n', '<leader>lw', function()
+    -- Check if the quickfix window is currently open
+    local qf_winid = vim.fn.getqflist({ winid = 0 }).winid
+    local action = qf_winid > 0 and 'cclose' or 'copen'
+    
+    -- Execute open or close silently
+    pcall(vim.cmd, action)
+end, { desc = 'Toggle Quickfix (Vimtex Errors)', silent = true })
+
+-- Create an augroup to manage LaTeX-specific settings
+local tex_group = vim.api.nvim_create_augroup("TexFormat", { clear = true })
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "tex",
+    group = tex_group,
+    callback = function()
+        -- Map <leader>f to format the file AND replace quotes
+        vim.keymap.set('n', '<C-M-l>', function()
+            -- -- 1. Save current view (cursor position and scroll)
+            -- local view = vim.fn.winsaveview()
+
+            -- 2. Run the quote replacement (silent 'e' flag to avoid errors if no quotes found)
+            vim.cmd([[silent! %s/"\(.\{-}\)"/\\enquote{\1}/g]])
+
+            -- -- 4. Restore the view
+            -- vim.fn.winrestview(view)
+            
+            print("LaTeX quotes replaced")
+        end, { buffer = true, desc = "Fix quotes" })
+    end,
+})
 
 -- --- Latex LSP --- 
 
@@ -475,6 +521,7 @@ vim.lsp.config['texlab'] = {
     }
   }
 }
+
 
 vim.lsp.enable('texlab')
 
@@ -524,7 +571,6 @@ vim.keymap.set("n", "<leader>gw", "<cmd>Gwrite<CR>")
 
 -- --- Git signs ---
 
-
 -- Define the Hunk Navigation Logic
 local function nav_hunk(dir)
   local gitsigns = require('gitsigns')
@@ -537,6 +583,7 @@ local function nav_hunk(dir)
   -- Center immediately after jump -- Doesn't work yet
   vim.cmd("normal! zz")
 end
+
 
 require('gitsigns').setup{
   on_attach = function(bufnr)
