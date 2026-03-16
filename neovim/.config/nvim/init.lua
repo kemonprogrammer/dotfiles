@@ -144,10 +144,10 @@ vim.api.nvim_set_keymap('i', '<C-c>', '<Esc>', { noremap = true, silent = true }
 -- CTRL-S to save
 vim.api.nvim_set_keymap('n', '<C-s>', '<cmd>update<CR>', { desc = 'Save'})
 vim.api.nvim_set_keymap('v', '<C-s>', '<cmd>update<CR>', { desc = 'Save'})
+vim.api.nvim_set_keymap('i', '<C-s>', '<C-o><cmd>update<CR>', { desc = 'Save and return to insert mode' })
 ---- TODO: try neovims beta feature CTRL+S
 --inoremap <silent> <C-S> <C-O>:update<CR>
 --imap('<C-s>', '<C-O>:update<CR>')
-
 
 ---- Leader shortcuts
 --nnoremap <leader>ee :NERDTreeFocus<CR>
@@ -217,6 +217,19 @@ vim.keymap.set('n', '<F8>', ':let mycurf=expand("<cfile>")<cr><c-w>p:execute("e 
 ---- :map ][ /}<CR>b99]}
 ---- :map ]] j0[[%/{<CR>
 ---- :map [] k$][%?}<CR>
+
+
+-- Yanking
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank({
+      -- higroup = 'Visual',
+      timeout = 200,
+    })
+  end,
+})
 
 
 -- --- Color schemes ---
