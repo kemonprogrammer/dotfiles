@@ -1,6 +1,7 @@
 -- Stop jumping left gutter from warnings vim.opt.signcolumn = "yes"
 
 -- Auto suggestions command mode
+vim.opt.cursorline = true
 vim.opt.wildmenu = true
 vim.opt.wildoptions = "pum"
 
