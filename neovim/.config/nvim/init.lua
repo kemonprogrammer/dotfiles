@@ -710,3 +710,50 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set('n', 'q', '<cmd>close<CR>', { buffer = args.buf, silent = true })
   end,
 })
+
+
+--- Go
+
+vim.lsp.config['gopls'] = {
+  settings = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+      gofumpt = true,
+    },
+  },
+}
+
+vim.lsp.enable('gopls')
+
+-- Create an augroup to prevent duplicate autocmds on config reload
+local go_fmt_group = vim.api.nvim_create_augroup("GoFormatAndImports", { clear = true })
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  group = go_fmt_group,
+  callback = function()
+    local params = vim.lsp.util.make_range_params()
+    params.context = { only = { "source.organizeImports" } }
+
+    -- buf_request_sync defaults to a 1000ms timeout.
+    -- Set to 3000ms here to ensure slower machines/codebases don't drop the write.
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+
+    for cid, res in pairs(result or {}) do
+      for _, r in pairs(res.result or {}) do
+        if r.edit then
+          -- Updated for Neovim 0.11: get_clients replaces get_client_by_id
+          local client = vim.lsp.get_clients({ id = cid })[1]
+          local enc = (client and client.offset_encoding) or "utf-16"
+          vim.lsp.util.apply_workspace_edit(r.edit, enc)
+        end
+      end
+    end
+
+    -- Format the buffer synchronously
+    vim.lsp.buf.format({ async = false })
+  end,
+})
