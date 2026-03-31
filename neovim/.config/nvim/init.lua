@@ -499,28 +499,28 @@ vim.keymap.set('n', '<leader>lw', function()
     pcall(vim.cmd, action)
 end, { desc = 'Toggle Quickfix (Vimtex Errors)', silent = true })
 
--- Create an augroup to manage LaTeX-specific settings
-local tex_group = vim.api.nvim_create_augroup("TexFormat", { clear = true })
+-- -- Can't do that, because of quotes inside code listings
+-- -- Create an augroup to manage LaTeX-specific settings
+-- local tex_group = vim.api.nvim_create_augroup("TexFormat", { clear = true })
 
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "tex",
-    group = tex_group,
-    callback = function()
-        -- Map <leader>f to format the file AND replace quotes
-        vim.keymap.set('n', '<C-M-l>', function()
-            -- -- 1. Save current view (cursor position and scroll)
-            -- local view = vim.fn.winsaveview()
+-- vim.api.nvim_create_autocmd("FileType", {
+--     pattern = "tex",
+--     group = tex_group,
+--     callback = function()
+--         vim.keymap.set('n', '<C-M-l>', function()
+--             -- -- 1. Save current view (cursor position and scroll)
+--             -- local view = vim.fn.winsaveview()
 
-            -- 2. Run the quote replacement (silent 'e' flag to avoid errors if no quotes found)
-            vim.cmd([[silent! %s/"\(.\{-}\)"/\\enquote{\1}/g]])
+--             -- 2. Run the quote replacement (silent 'e' flag to avoid errors if no quotes found)
+--             vim.cmd([[silent! %s/"\(.\{-}\)"/\\enquote{\1}/g]])
 
-            -- -- 4. Restore the view
-            -- vim.fn.winrestview(view)
-            
-            print("LaTeX quotes replaced")
-        end, { buffer = true, desc = "Fix quotes" })
-    end,
-})
+--             -- -- 4. Restore the view
+--             -- vim.fn.winrestview(view)
+
+--             print("LaTeX quotes replaced")
+--         end, { buffer = true, desc = "Fix quotes" })
+--     end,
+-- })
 
 -- --- Latex LSP --- 
 
