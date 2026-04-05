@@ -22,8 +22,9 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 
 -- colorschemes
+-- Plug 'doums/darcula'
+-- Plug 'flazz/vim-colorschemes'
 Plug 'tomasiser/vim-code-dark'
-Plug 'doums/darcula'
 
 -- smooth scrolling
 -- Plug 'psliwka/vim-smoothie'
@@ -235,12 +236,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- --- Color schemes ---
 -- vscode-like colorscheme
---colorscheme codedark
---vim.g.colorscheme = 'codedark'
+-- colorscheme codedark
 vim.opt.termguicolors = true
-vim.cmd([[
-colorscheme codedark
-]])
+-- vim.cmd([[
+-- colorscheme rippedcasts
+
+-- ]])
+vim.cmd('colorscheme codedark')
 
 -- jetbrains-like colorscheme
 --colorscheme darcula
@@ -269,6 +271,7 @@ end)()
 -- Dashboard
 local alpha = require("alpha")
 local dashboard = require("alpha.themes.theta")
+-- dashboard.file_icons.provider = "devicons"
 -- dashboard.buttons.val = {
 --     -- dashboard.button("t", "󰈙  Open Thesis Project", function() open_thesis() end),
 --     dashboard.button("p", "󱔗  Recent Projects", ":Telescope projects<CR>"),
