@@ -3,6 +3,8 @@
   email = 67599521+kemonprogrammer@users.noreply.github.com
 [includeIf "gitdir:~/hc/"]
   path = ~/.gitconfig.work
+[includeIf "gitdir:~/project-test/"]
+	path = ~/.gitconfig.test
 [core]
 	editor = nvim -f
 	autocrlf = input
