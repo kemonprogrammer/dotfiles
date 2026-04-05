@@ -7,22 +7,25 @@ strip-text=true
 
 [dash-to-dock]
 always-center-icons=true
+animation-time=0.10000000000000002
 background-opacity=0.80000000000000004
 dash-max-icon-size=40
-dock-fixed=false
+disable-overview-on-startup=true
+dock-fixed=true
 dock-position='BOTTOM'
 extend-height=true
 height-fraction=0.40000000000000002
-hide-delay=0.49999999999999994
+hide-delay=0.10000000000000002
 intellihide-mode='FOCUS_APPLICATION_WINDOWS'
 multi-monitor=true
 preferred-monitor=-2
-preferred-monitor-by-connector='DP-6'
-
-[just-perfection]
-support-notifier-showed-version=36
-support-notifier-type=0
-window-demands-attention-focus=true
+preferred-monitor-by-connector='eDP-1'
+running-indicator-style='DOTS'
+show-mounts-network=true
 
 [multi-monitors-add-on]
 available-indicators=['clipboardIndicator']
+
+[multi-monitors-bar]
+available-indicators=['clipboardIndicator']
+screenshot-on-all-monitors=true
