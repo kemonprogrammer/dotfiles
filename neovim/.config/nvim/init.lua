@@ -805,14 +805,21 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- diff view close with 'q'
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "DiffviewFiles" },
   callback = function(args)
     vim.keymap.set('n', 'q', '<cmd>DiffviewClose<CR>', { buffer = args.buf, silent = true })
   end,
 })
+vim.api.nvim_create_autocmd("User", {
+  pattern = "DiffviewDiffBufWinEnter",
+  callback = function(args)
+    vim.keymap.set('n', 'q', '<cmd>DiffviewClose<CR>', { buffer = args.buf, silent = true })
+  end,
+})
 
--- closes q:, q/, q? with q
+-- close q:, q/ and  q? with q
 vim.api.nvim_create_autocmd("CmdWinEnter", {
   callback = function(args)
     vim.keymap.set('n', 'q', '<cmd>close!<CR>', { buffer = args.buf, silent = true })
