@@ -1,9 +1,11 @@
 -- Stop jumping left gutter from warnings vim.opt.signcolumn = "yes"
 
 -- Auto suggestions command mode
-vim.opt.cursorline = true
 vim.opt.wildmenu = true
 vim.opt.wildoptions = "pum"
+
+-- Highlight cursor line
+vim.opt.cursorline = true
 
 -- Needs to be done before plugins
 vim.g.mapleader = " "
@@ -49,6 +51,7 @@ Plug 'Raimondi/delimitMate'
 -- Git
 Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'isakbm/gitgraph.nvim'
 
 -- Latex
 Plug 'lervag/vimtex'
@@ -580,8 +583,8 @@ vim.keymap.set("n", "<leader>gs", "<cmd>Git<CR>")
 vim.keymap.set("n", "<leader>gdd", "<cmd>Gvdiffsplit<CR>")
 vim.keymap.set("n", "<leader>gds", "<cmd>Gvdiffsplit !<CR>")
 vim.keymap.set("n", "<leader>gc", "<cmd>Git commit<CR>")
-vim.keymap.set("n", "<leader>gp", "<cmd>Git push<CR>")
-vim.keymap.set("n", "<leader>gl", "<cmd>Git pull<CR>")
+vim.keymap.set("n", "<leader>gps", "<cmd>Git push<CR>")
+vim.keymap.set("n", "<leader>gpl", "<cmd>Git pull<CR>")
 vim.keymap.set("n", "<leader>gb", "<cmd>Git blame<CR>")
 vim.keymap.set("n", "<leader>gr", "<cmd>Gread<CR>")
 vim.keymap.set("n", "<leader>gw", "<cmd>Gwrite<CR>")
@@ -601,6 +604,72 @@ local function nav_hunk(dir)
   vim.cmd("normal! zz")
 end
 
+require('gitgraph').setup{
+  git_cmd = "git",
+  symbols = {
+    -- -- default
+    -- merge_commit = 'M',
+    -- commit = '*',
+
+    -- ghostty or kitty
+    merge_commit = '',
+    commit = '',
+    merge_commit_end = '',
+    commit_end = '',
+
+    -- Advanced symbols
+    GVER = '',
+    GHOR = '',
+    GCLD = '',
+    GCRD = '╭',
+    GCLU = '',
+    GCRU = '',
+    GLRU = '',
+    GLRD = '',
+    GLUD = '',
+    GRUD = '',
+    GFORKU = '',
+    GFORKD = '',
+    GRUDCD = '',
+    GRUDCU = '',
+    GLUDCD = '',
+    GLUDCU = '',
+    GLRDCL = '',
+    GLRDCR = '',
+    GLRUCL = '',
+    GLRUCR = '',
+  },
+  format = {
+    timestamp = '%H:%M:%S %d-%m-%Y',
+    fields = { 'hash', 'timestamp', 'author', 'branch_name', 'tag' },
+  },
+  hooks = {
+    on_select_commit = function(commit)
+      print('selected commit:', commit.hash)
+    end,
+    on_select_range_commit = function(from, to)
+      print('selected range:', from.hash, to.hash)
+    end,
+  },
+  keys = {
+    {
+      "<leader>gl",
+      function()
+          require('gitgraph').draw({}, { all = true, max_count = 5000 })
+        end,
+        desc = "GitGraph - Draw",
+    }
+  }
+  -- log_level=
+
+}
+
+vim.keymap.set('n', '<leader>gl',
+  function()
+    require('gitgraph').draw({}, { all = true, max_count = 5000 })
+  end,
+  { desc = 'GitGraph - Draw' }
+)
 
 require('gitsigns').setup{
   on_attach = function(bufnr)
@@ -708,9 +777,9 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Autocommand to make specific buffers closeable with 'q'
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "fugitive", "lspinfo", "git", "help", "man", "gitsigns.diff", },
+  pattern = { "vim", "fugitive", "lspinfo", "git", "help", "man", "gitsigns.diff", "gitgraph" },
   callback = function(args)
-    vim.keymap.set('n', 'q', '<cmd>close<CR>', { buffer = args.buf, silent = true })
+    vim.keymap.set('n', 'q', '<cmd>bwipeout!<CR>', { buffer = args.buf, silent = true })
   end,
 })
 
@@ -760,3 +829,10 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.lsp.buf.format({ async = false })
   end,
 })
+
+vim.api.nvim_set_hl(0, "CursorLine", { bg = "#343434" })
+-- Makes the warning a curly undercurl instead of a solid strike
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { sp = muted_warning, undercurl = true })
+-- vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2e3440" })
+
+-- set statusline+=%{get(b:,'gitsigns_status','')}
