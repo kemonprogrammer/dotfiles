@@ -44,7 +44,8 @@ Plug 'tomasiser/vim-code-dark'
 -- Plug 'psliwka/vim-smoothie'
 
 -- comments
-Plug 'tpope/vim-commentary'
+-- Plug 'tpope/vim-commentary'
+Plug 'numToStr/Comment.nvim'
 
 -- statusline
 -- Plug 'vim-airline/vim-airline'
@@ -236,6 +237,17 @@ vim.keymap.set('n', '<F8>', ':let mycurf=expand("<cfile>")<cr><c-w>p:execute("e 
 ---- :map ]] j0[[%/{<CR>
 ---- :map [] k$][%?}<CR>
 
+-- --- Comments
+-- Also use CTRL + / in insert mode to toggle comments
+vim.keymap.set('n', '<C-/>', function()
+    require('Comment.api').toggle.linewise.current()
+end, { desc = 'Toggle comment' })
+
+vim.keymap.set('i', '<C-/>', function()
+    require('Comment.api').toggle.linewise.current()
+end, { desc = 'Toggle comment' })
+
+vim.keymap.set('x', '<C-/>', '<ESC><CMD>lua require("Comment.api").locked("toggle.linewise")(vim.fn.visualmode())<CR>')
 
 -- Yanking
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -510,12 +522,12 @@ vim.g.vimtex_compiler_method = 'latexmk'
 vim.g.vimtex_quickfix_open_on_warning = 0
 
 vim.keymap.set('n', '<leader>lw', function()
-    -- Check if the quickfix window is currently open
-    local qf_winid = vim.fn.getqflist({ winid = 0 }).winid
-    local action = qf_winid > 0 and 'cclose' or 'copen'
-    
-    -- Execute open or close silently
-    pcall(vim.cmd, action)
+  -- Check if the quickfix window is currently open
+  local qf_winid = vim.fn.getqflist({ winid = 0 }).winid
+  local action = qf_winid > 0 and 'cclose' or 'copen'
+
+  -- Execute open or close silently
+  pcall(vim.cmd, action)
 end, { desc = 'Toggle Quickfix (Vimtex Errors)', silent = true })
 
 -- -- Can't do that, because of quotes inside code listings
@@ -592,16 +604,20 @@ vim.lsp.enable('ltex')
 -- --- Git ---
 
 -- --- Fugitive ---
-vim.keymap.set("n", "<leader>gs", "<cmd>Git<CR>")
+vim.keymap.set("n", "<leader>gs",  "<cmd>Git<CR>")
 vim.keymap.set("n", "<leader>gdd", "<cmd>Gvdiffsplit<CR>")
 vim.keymap.set("n", "<leader>gds", "<cmd>Gvdiffsplit !<CR>")
-vim.keymap.set("n", "<leader>gc", "<cmd>Git commit<CR>")
+vim.keymap.set("n", "<leader>gca", function()
+  vim.cmd('Git add --all')
+  vim.cmd('Git commit --amend --no-edit')
+end, { desc = 'Git amend and force-with-lease' })
+vim.keymap.set("n", "<leader>gcc", "<cmd>Git commit<CR>")
 vim.keymap.set("n", "<leader>gps", "<cmd>Git push<CR>")
 vim.keymap.set("n", "<leader>gpl", "<cmd>Git pull<CR>")
 vim.keymap.set('n', '<leader>gpf', function()
-    vim.cmd('Git add --all')
-    vim.cmd('Git commit --amend --no-edit')
-    vim.cmd('Git push --force-with-lease')
+  vim.cmd('Git add --all')
+  vim.cmd('Git commit --amend --no-edit')
+  vim.cmd('Git push --force-with-lease')
 end, { desc = 'Git amend and force-with-lease' })
 
 vim.keymap.set("n", "<leader>gb", "<cmd>Git blame<CR>")
