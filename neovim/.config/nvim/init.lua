@@ -7,6 +7,18 @@ vim.opt.wildoptions = "pum"
 -- Highlight cursor line
 vim.opt.cursorline = true
 
+-- remove non-line numbers and fill char ~, -
+vim.api.nvim_set_hl(0, "EndOfBuffer", { fg = "bg" })
+vim.opt.fillchars:append({ eob = " " })
+-- vim.api.nvim_set_hl(0, "DiffviewDiffFill", { link = "DiffAdd", default = true })
+-- vim.api.nvim_set_hl(0, "DiffviewDiffFill", { fg = "#3b4252", bg = "NONE" })
+-- vim.api.nvim_set_hl(0, "DiffviewDiffFill", {
+--   fg = "#434c5e", -- Adjust this hex code to match your theme's "muted" color
+--   bg = "NONE",
+--   blend = 0
+-- })
+vim.opt.fillchars:append { diff = "╱" }
+
 -- Needs to be done before plugins
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -586,6 +598,12 @@ vim.keymap.set("n", "<leader>gds", "<cmd>Gvdiffsplit !<CR>")
 vim.keymap.set("n", "<leader>gc", "<cmd>Git commit<CR>")
 vim.keymap.set("n", "<leader>gps", "<cmd>Git push<CR>")
 vim.keymap.set("n", "<leader>gpl", "<cmd>Git pull<CR>")
+vim.keymap.set('n', '<leader>gpf', function()
+    vim.cmd('Git add --all')
+    vim.cmd('Git commit --amend --no-edit')
+    vim.cmd('Git push --force-with-lease')
+end, { desc = 'Git amend and force-with-lease' })
+
 vim.keymap.set("n", "<leader>gb", "<cmd>Git blame<CR>")
 vim.keymap.set("n", "<leader>gr", "<cmd>Gread<CR>")
 vim.keymap.set("n", "<leader>gw", "<cmd>Gwrite<CR>")
@@ -778,8 +796,10 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Autocommand to make specific buffers closeable with 'q'
+-- find out file type using `:set filetype?`
+
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "vim", "fugitive", "lspinfo", "git", "help", "man", "gitsigns.diff", "gitgraph" },
+  pattern = { "fugitive", "lspinfo", "git", "help", "man", "gitsigns.diff", "gitgraph" },
   callback = function(args)
     vim.keymap.set('n', 'q', '<cmd>bwipeout!<CR>', { buffer = args.buf, silent = true })
   end,
@@ -789,6 +809,13 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "DiffviewFiles" },
   callback = function(args)
     vim.keymap.set('n', 'q', '<cmd>DiffviewClose<CR>', { buffer = args.buf, silent = true })
+  end,
+})
+
+-- closes q:, q/, q? with q
+vim.api.nvim_create_autocmd("CmdWinEnter", {
+  callback = function(args)
+    vim.keymap.set('n', 'q', '<cmd>close!<CR>', { buffer = args.buf, silent = true })
   end,
 })
 
