@@ -9,16 +9,26 @@ vim.opt.cursorline = true
 
 -- remove non-line numbers and fill char ~, -
 vim.api.nvim_set_hl(0, "EndOfBuffer", { fg = "bg" })
-vim.opt.fillchars:append({ eob = " " })
--- vim.api.nvim_set_hl(0, "DiffviewDiffFill", { link = "DiffAdd", default = true })
--- vim.api.nvim_set_hl(0, "DiffviewDiffFill", { fg = "#3b4252", bg = "NONE" })
--- vim.api.nvim_set_hl(0, "DiffviewDiffFill", {
---   fg = "#434c5e", -- Adjust this hex code to match your theme's "muted" color
---   bg = "NONE",
---   blend = 0
--- })
-vim.opt.fillchars:append { diff = "╱" }
+vim.opt.fillchars:append({ diff = "╱", eob = " " })
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    local muted_fg = "#434c5e" -- Your preferred muted color
 
+    -- The filler characters (the diagonal lines)
+    vim.api.nvim_set_hl(0, "DiffviewDiffFill", { fg = muted_fg, bg = "NONE" })
+
+    -- The background of deleted lines in the diff
+    vim.api.nvim_set_hl(0, "DiffviewDiffDelete", { fg = muted_fg, bg = "NONE" })
+
+    -- Sometimes you need to clear the standard DiffDelete to prevent bleed-through
+    vim.api.nvim_set_hl(0, "DiffDelete", { fg = muted_fg, bg = "NONE" })
+  end,
+})
+vim.cmd("colorscheme " .. vim.g.colors_name)
+
+-- Manually trigger once to apply to the current session
+vim.cmd("colorscheme " .. vim.g.colors_name)
 -- Needs to be done before plugins
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
