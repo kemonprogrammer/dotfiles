@@ -51,6 +51,7 @@ Plug 'Raimondi/delimitMate'
 -- Git
 Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'sindrets/diffview.nvim'
 Plug 'isakbm/gitgraph.nvim'
 
 -- Latex
@@ -645,10 +646,12 @@ require('gitgraph').setup{
   },
   hooks = {
     on_select_commit = function(commit)
-      print('selected commit:', commit.hash)
+      print('Opening diff for: ' .. commit.hash)
+      require("diffview").open({commit.hash .. "^!"})
     end,
     on_select_range_commit = function(from, to)
-      print('selected range:', from.hash, to.hash)
+      print('Opening diff from ' .. from.hash .. ' to ' .. to.hash)
+      require("diffview").open({from.hash, '..', to.hash})
     end,
   },
   keys = {
@@ -659,9 +662,8 @@ require('gitgraph').setup{
         end,
         desc = "GitGraph - Draw",
     }
-  }
-  -- log_level=
-
+  },
+  log_level=0
 }
 
 vim.keymap.set('n', '<leader>gl',
@@ -780,6 +782,13 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "vim", "fugitive", "lspinfo", "git", "help", "man", "gitsigns.diff", "gitgraph" },
   callback = function(args)
     vim.keymap.set('n', 'q', '<cmd>bwipeout!<CR>', { buffer = args.buf, silent = true })
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "DiffviewFiles" },
+  callback = function(args)
+    vim.keymap.set('n', 'q', '<cmd>DiffviewClose<CR>', { buffer = args.buf, silent = true })
   end,
 })
 
