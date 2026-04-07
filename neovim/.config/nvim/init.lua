@@ -25,10 +25,10 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     vim.api.nvim_set_hl(0, "DiffDelete", { fg = muted_fg, bg = "NONE" })
   end,
 })
-vim.cmd("colorscheme " .. vim.g.colors_name)
+-- vim.cmd("colorscheme " .. vim.g.colors_name)
 
 -- Manually trigger once to apply to the current session
-vim.cmd("colorscheme " .. vim.g.colors_name)
+-- vim.cmd("colorscheme " .. vim.g.colors_name)
 -- Needs to be done before plugins
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -617,11 +617,11 @@ vim.lsp.enable('ltex')
 vim.keymap.set("n", "<leader>gs",  "<cmd>Git<CR>")
 vim.keymap.set("n", "<leader>gdd", "<cmd>Gvdiffsplit<CR>")
 vim.keymap.set("n", "<leader>gds", "<cmd>Gvdiffsplit !<CR>")
-vim.keymap.set("n", "<leader>gca", function()
+vim.keymap.set("n", "<leader>gcc", "<cmd>Git commit<CR>")
+vim.keymap.set("n", "<leader>gcam", function()
   vim.cmd('Git add --all')
   vim.cmd('Git commit --amend --no-edit')
 end, { desc = 'Git amend and force-with-lease' })
-vim.keymap.set("n", "<leader>gcc", "<cmd>Git commit<CR>")
 vim.keymap.set("n", "<leader>gps", "<cmd>Git push<CR>")
 vim.keymap.set("n", "<leader>gpl", "<cmd>Git pull<CR>")
 vim.keymap.set('n', '<leader>gpf', function()
