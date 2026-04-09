@@ -23,9 +23,14 @@ preferred-monitor-by-connector='eDP-1'
 running-indicator-style='DOTS'
 show-mounts-network=true
 
+[just-perfection]
+panel-in-overview=true
+support-notifier-type=0
+window-demands-attention-focus=true
+
 [multi-monitors-add-on]
 available-indicators=['clipboardIndicator']
 
 [multi-monitors-bar]
-available-indicators=['clipboardIndicator']
+available-indicators=@as []
 screenshot-on-all-monitors=true
