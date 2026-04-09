@@ -200,6 +200,12 @@ local function make_repeatable(key, action)
   end
 end
 
+-- Maps Alt+c in command-line mode to copy the current typed command
+vim.keymap.set('c', '<M-c>', function()
+  local cmd = vim.fn.getcmdline()
+  vim.fn.setreg('+', cmd)
+  print("\nCommand copied to clipboard!")
+end, { desc = 'Copy current command line to clipboard' })
 
 ---- Autocenter
 ----nnoremap G Gzz
@@ -663,16 +669,16 @@ require('gitgraph').setup{
     commit_end = '',
 
     -- Advanced symbols
-    GVER = '',
-    GHOR = '',
-    GCLD = '',
-    GCRD = '╭',
-    GCLU = '',
-    GCRU = '',
-    GLRU = '',
-    GLRD = '',
-    GLUD = '',
-    GRUD = '',
+    GVER   = '',
+    GHOR   = '',
+    GCLD   = '',
+    GCRD   = '╭',
+    GCLU   = '',
+    GCRU   = '',
+    GLRU   = '',
+    GLRD   = '',
+    GLUD   = '',
+    GRUD   = '',
     GFORKU = '',
     GFORKD = '',
     GRUDCD = '',
@@ -833,7 +839,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- diff view close with 'q'
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "DiffviewFiles" },
+  pattern = { "DiffviewFiles", "DiffviewFileHistory" },
   callback = function(args)
     vim.keymap.set('n', 'q', '<cmd>DiffviewClose<CR>', { buffer = args.buf, silent = true })
   end,
@@ -849,6 +855,24 @@ vim.api.nvim_create_autocmd("User", {
 vim.api.nvim_create_autocmd("CmdWinEnter", {
   callback = function(args)
     vim.keymap.set('n', 'q', '<cmd>close!<CR>', { buffer = args.buf, silent = true })
+  end,
+})
+
+
+-- gitgraph
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "gitgraph" },
+  callback = function(args)
+    vim.keymap.set('n', 'j', '2j', { buffer = args.buf, noremap = true })
+    vim.keymap.set('v', 'j', '2j', { buffer = args.buf, noremap = true })
+    vim.keymap.set('n', 'k', '2k', { buffer = args.buf, noremap = true })
+    vim.keymap.set('v', 'k', '2k', { buffer = args.buf, noremap = true })
+
+    vim.keymap.set('n', 'gj', 'j', { buffer = args.buf, noremap = true })
+    vim.keymap.set('v', 'gj', 'j', { buffer = args.buf, noremap = true })
+    vim.keymap.set('n', 'gk', 'k', { buffer = args.buf, noremap = true })
+    vim.keymap.set('v', 'gk', 'k', { buffer = args.buf, noremap = true })
   end,
 })
 
