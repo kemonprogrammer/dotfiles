@@ -157,7 +157,10 @@ vim.api.nvim_set_keymap('n', '<C-c>', '<Esc>', { noremap = true, silent = true }
 vim.api.nvim_set_keymap('i', '<C-c>', '<Esc>', { noremap = true, silent = true })
 
 -- CTRL-S to save
-vim.api.nvim_set_keymap('n', '<C-s>', '<cmd>update<CR>', { desc = 'Save'})
+vim.keymap.set('n', '<C-s>', function()
+  vim.cmd('update')
+  print("Written")
+end, { desc = 'Save'})
 vim.api.nvim_set_keymap('v', '<C-s>', '<cmd>update<CR>', { desc = 'Save'})
 vim.api.nvim_set_keymap('i', '<C-s>', '<C-o><cmd>update<CR>', { desc = 'Save and return to insert mode' })
 ---- TODO: try neovims beta feature CTRL+S
@@ -186,12 +189,20 @@ local function make_repeatable(key, action)
   end
 end
 
--- Maps Alt+c in command-line mode to copy the current typed command
+
+-- Copy to system clipboard using ALT+c
+vim.keymap.set('n', '<M-c>', '"+yy', { desc = 'Copy line to system clipboard' })
+vim.keymap.set('v', '<M-c>', '"+y', { desc = 'Copy selection to system clipboard' })
 vim.keymap.set('c', '<M-c>', function()
   local cmd = vim.fn.getcmdline()
   vim.fn.setreg('+', cmd)
-  print("\nCommand copied to clipboard!")
 end, { desc = 'Copy current command line to clipboard' })
+
+-- Copy command output to system clipboard using `:CopyOutput SomeVimCommand`
+vim.api.nvim_create_user_command('CopyOutput', function(opts)
+  local obj = vim.api.nvim_exec2(opts.args, { output = true })
+  vim.fn.setreg('+', obj.output)
+end, { nargs = 1 })
 
 ---- Autocenter
 ----nnoremap G Gzz
