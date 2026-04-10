@@ -7,24 +7,10 @@ vim.opt.wildoptions = "pum"
 -- Highlight cursor line
 vim.opt.cursorline = true
 
--- remove non-line numbers and fill char ~, -
-vim.api.nvim_set_hl(0, "EndOfBuffer", { fg = "bg" })
-vim.opt.fillchars:append({ diff = "╱", eob = " " })
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
-  callback = function()
-    local muted_fg = "#434c5e" -- Your preferred muted color
 
-    -- The filler characters (the diagonal lines)
-    vim.api.nvim_set_hl(0, "DiffviewDiffFill", { fg = muted_fg, bg = "NONE" })
+vim.cmd([[set mousescroll=ver:1,hor:6]])
 
-    -- The background of deleted lines in the diff
-    vim.api.nvim_set_hl(0, "DiffviewDiffDelete", { fg = muted_fg, bg = "NONE" })
 
-    -- Sometimes you need to clear the standard DiffDelete to prevent bleed-through
-    vim.api.nvim_set_hl(0, "DiffDelete", { fg = muted_fg, bg = "NONE" })
-  end,
-})
 -- vim.cmd("colorscheme " .. vim.g.colors_name)
 
 -- Manually trigger once to apply to the current session
@@ -858,6 +844,45 @@ vim.api.nvim_create_autocmd("User", {
 vim.api.nvim_create_autocmd("CmdWinEnter", {
   callback = function(args)
     vim.keymap.set('n', 'q', '<cmd>close!<CR>', { buffer = args.buf, silent = true })
+  end,
+})
+
+-- remove non-line numbers and fill char ~, -
+vim.api.nvim_set_hl(0, "EndOfBuffer", { fg = "bg" })
+
+
+-- ## diff view
+local muted_fg = "#434c5e" -- blue/grey
+
+
+vim.opt.fillchars:append({ diff = "╱", eob = " " })
+
+-- colors
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+
+    -- add and change filler characters
+    vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#2d4f34" }) -- dark green
+    vim.api.nvim_set_hl(0, "DiffChange", { bg = "#2b3a4a" }) -- dark blue
+
+    -- Deletion 
+    -- right side (filler characters)
+    vim.api.nvim_set_hl(0, "DiffviewDiffFill", { fg = muted_fg, bg = "NONE" })
+    vim.api.nvim_set_hl(0, "DiffviewDiffDelete", { fg = muted_fg, bg = "NONE" })
+    vim.api.nvim_set_hl(0, "DiffDelete", { fg = muted_fg, bg = "NONE" })
+    -- left side
+    vim.api.nvim_set_hl(0, "DiffviewDiffAddAsDelete", { bg = "#522b2b" }) -- dark red
+  end,
+})
+vim.cmd("doautocmd ColorScheme")
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "DiffviewDiffBufWinEnter",
+  callback = function(args)
+    if vim.wo.diff then
+      vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#522b2b" })
+    end
   end,
 })
 
