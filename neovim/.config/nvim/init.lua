@@ -291,6 +291,10 @@ vim.cmd('colorscheme codedark')
 -- jetbrains-like colorscheme
 --colorscheme darcula
 
+-- Add these lines after: vim.cmd('colorscheme codedark')
+vim.api.nvim_set_hl(0, 'Search', { bg = '#264f78', fg = 'NONE' })
+vim.api.nvim_set_hl(0, 'CurSearch', { bg = '#61afef', fg = '#282c34', bold = true })
+
 
 
 -- Treesitter enable highlight on each new buffer
