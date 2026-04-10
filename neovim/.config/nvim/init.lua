@@ -1,8 +1,5 @@
 -- Stop jumping left gutter from warnings vim.opt.signcolumn = "yes"
 
--- Auto suggestions command mode
-vim.opt.wildmenu = true
-vim.opt.wildoptions = "pum"
 
 -- Highlight cursor line
 vim.opt.cursorline = true
@@ -13,8 +10,6 @@ vim.cmd([[set mousescroll=ver:1,hor:6]])
 
 -- vim.cmd("colorscheme " .. vim.g.colors_name)
 
--- Manually trigger once to apply to the current session
--- vim.cmd("colorscheme " .. vim.g.colors_name)
 -- Needs to be done before plugins
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -253,11 +248,11 @@ vim.keymap.set('n', '<F8>', ':let mycurf=expand("<cfile>")<cr><c-w>p:execute("e 
 -- --- Comments
 -- Also use CTRL + / in insert mode to toggle comments
 vim.keymap.set('n', '<C-/>', function()
-    require('Comment.api').toggle.linewise.current()
+  require('Comment.api').toggle.linewise.current()
 end, { desc = 'Toggle comment' })
 
 vim.keymap.set('i', '<C-/>', function()
-    require('Comment.api').toggle.linewise.current()
+  require('Comment.api').toggle.linewise.current()
 end, { desc = 'Toggle comment' })
 
 vim.keymap.set('x', '<C-/>', '<ESC><CMD>lua require("Comment.api").locked("toggle.linewise")(vim.fn.visualmode())<CR>')
@@ -300,13 +295,13 @@ vim.g.NERDTreeShowHidden = 1
 
 -- Check if we are running in WSL
 local is_wsl = (function()
-    local handle = io.popen("uname -r")
-    if handle then
-        local result = handle:read("*a")
-        handle:close()
-        return result:lower():find("microsoft") ~= nil
-    end
-    return false
+  local handle = io.popen("uname -r")
+  if handle then
+    local result = handle:read("*a")
+    handle:close()
+    return result:lower():find("microsoft") ~= nil
+  end
+  return false
 end)()
 
 
@@ -338,7 +333,7 @@ require("project_nvim").setup({
 })
 
 vim.keymap.set('n', '<leader>fp', function()
-    require('telescope').extensions.projects.projects()
+  require('telescope').extensions.projects.projects()
 end, { desc = "Find Projects" })
 
 
@@ -526,11 +521,11 @@ cmp.setup({
 -- --- Latex ---
 
 if is_wsl then
-    -- SumatraPDF path (WSL path to the Windows .exe)
-    local sumatra_path = '/mnt/c/Users/MichaelLuu/AppData/Local/SumatraPDF/SumatraPDF.exe'
+  -- SumatraPDF path (WSL path to the Windows .exe)
+  local sumatra_path = '/mnt/c/Users/MichaelLuu/AppData/Local/SumatraPDF/SumatraPDF.exe'
 
-    vim.g.vimtex_view_general_viewer = sumatra_path
-    vim.g.vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
+  vim.g.vimtex_view_general_viewer = sumatra_path
+  vim.g.vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
 end
 
 
@@ -629,12 +624,13 @@ vim.keymap.set("n", "<leader>gcam", function()
   vim.cmd('Git add --all')
   vim.cmd('Git commit --amend --no-edit')
 end, { desc = 'Git amend and force-with-lease' })
-vim.keymap.set("n", "<leader>gps", "<cmd>Git push<CR>")
 vim.keymap.set("n", "<leader>gpl", "<cmd>Git pull<CR>")
+vim.keymap.set("n", "<leader>gps", "<cmd>Git push<CR>")
 vim.keymap.set('n', '<leader>gpf', function()
   vim.cmd('Git commit --amend --no-edit')
   vim.cmd('Git push --force-with-lease')
 end, { desc = 'Git amend and force-with-lease' })
+vim.keymap.set("n", "<leader>gpl", "<cmd>Git pull<CR>")
 
 vim.keymap.set("n", "<leader>gb", "<cmd>Git blame<CR>")
 vim.keymap.set("n", "<leader>gr", "<cmd>Gread<CR>")
@@ -708,9 +704,9 @@ require('gitgraph').setup{
     {
       "<leader>gl",
       function()
-          require('gitgraph').draw({}, { all = true, max_count = 5000 })
-        end,
-        desc = "GitGraph - Draw",
+        require('gitgraph').draw({}, { all = true, max_count = 5000 })
+      end,
+      desc = "GitGraph - Draw",
     }
   },
   log_level=0
