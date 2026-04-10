@@ -194,10 +194,16 @@ vim.keymap.set('c', '<M-c>', function()
 end, { desc = 'Copy current command line to clipboard' })
 
 -- Copy command output to system clipboard using `:CopyOutput SomeVimCommand`
+-- Could also do `:let @+ = execute(@:)`
 vim.api.nvim_create_user_command('CopyOutput', function(opts)
   local obj = vim.api.nvim_exec2(opts.args, { output = true })
   vim.fn.setreg('+', obj.output)
 end, { nargs = 1 })
+
+-- Paste from system clipboard, maybe CTRL+SHIFT+v is faster
+vim.keymap.set('i', '<C-r>+', '<C-r><C-o>+')
+
+vim.keymap.set('i', '<C-r>"', '<C-r><C-o>"')
 
 ---- Autocenter
 ----nnoremap G Gzz
