@@ -184,7 +184,7 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # fzf for fuzzy finding file content
 fzf_rg() {
-    RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case"
+    RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case --hidden --glob '!.git/*'"
     local selected
     selected=$(eval "$RG_PREFIX \"$1\"" | fzf --ansi --delimiter ':' \
         --preview 'bat --color=always --style=numbers --highlight-line {2} {1}' \
@@ -192,7 +192,7 @@ fzf_rg() {
     [ -n "$selected" ] && echo "$selected"
 }
 
-bind -x '"\C-f": "fzf_rg "'  # Press Ctrl+F to trigger fzf_rg
+bind -x '"\C-f": "fzf_rg "'  # Press CTRL+F to trigger fzf_rg
 
 # ZSH-like Autocompletion
 bind 'set show-all-if-ambiguous on'
@@ -280,6 +280,41 @@ passc() {
         command pass -c "$target"
     else
         echo "No password selected."
+    fi
+}
+
+# show a password
+passs() {
+    local target
+    target=$(_fzf_pass_list)
+    
+    if [[ -n "$target" ]]; then
+        echo "Showing content of \"$target\""
+        command pass show "$target"
+    else
+        echo "No password selected."
+    fi
+}
+
+passb() {
+    local target
+    target=$(_fzf_pass_list)
+    
+    if [[ -n "$target" ]]; then
+        # Extract the username using the same logic as before
+        local username
+        username=$(command pass "$target" | grep "^user:" | sed 's/^user: //')
+
+        if [[ -n "$username" ]]; then
+            # Using wl-copy for Fedora/GNOME (Wayland)
+            echo -n "$username" | wl-copy
+            echo "Username for '$target' copied to clipboard."
+        else
+            echo "Error: No 'user:' line found in '$target'."
+            return 1
+        fi
+    else
+        echo "No entry selected."
     fi
 }
 
