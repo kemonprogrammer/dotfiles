@@ -184,11 +184,23 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # fzf for fuzzy finding file content
 fzf_rg() {
-    RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case --hidden --glob '!.git/*'"
+    # 1. Base command (Hidden files included, .git excluded)
+    local base_rg="rg --column --line-number --no-heading --color=always --smart-case --hidden --glob '!.git/*'"
+    
+    # 2. The two states
+    local clean_cmd="$base_rg"
+    local all_cmd="$base_rg --no-ignore"
+
     local selected
-    selected=$(eval "$RG_PREFIX \"$1\"" | fzf --ansi --delimiter ':' \
+    # We start with the 'clean' command
+    selected=$(eval "$clean_cmd \"$1\"" | fzf --ansi --delimiter ':' \
+        --prompt "Standard> " \
+        --header "CTRL-G: Toggle Ignore Files" \
         --preview 'bat --color=always --style=numbers --highlight-line {2} {1}' \
+        --bind "ctrl-g:unbind(ctrl-g)+reload($all_cmd \"$1\")+change-prompt(ALL FILES> )+rebind(ctrl-t)" \
+        --bind "ctrl-t:unbind(ctrl-t)+reload($clean_cmd \"$1\")+change-prompt(Standard> )+rebind(ctrl-g)" \
         --bind 'enter:execute(nvim {1} +{2})')
+
     [ -n "$selected" ] && echo "$selected"
 }
 
