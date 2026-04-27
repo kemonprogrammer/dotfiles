@@ -5,6 +5,8 @@
   path = ~/.gitconfig.work
 [includeIf "gitdir:~/project-test/"]
 	path = ~/.gitconfig.test
+[includeIf "gitdir:~/project-test/reviews"]
+	path = ~/.gitconfig.test
 [core]
 	editor = nvim -f
 	autocrlf = input
