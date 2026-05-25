@@ -38,6 +38,7 @@ Plug 'tomasiser/vim-code-dark'
 -- Plug 'tpope/vim-commentary'
 Plug 'numToStr/Comment.nvim'
 
+Plug 'rcarriga/nvim-notify'
 -- statusline
 -- Plug 'vim-airline/vim-airline'
 
@@ -65,6 +66,7 @@ Plug 'barreiroleo/ltex_extra.nvim'  -- add dictionary for latex language server
 
 -- LSP
 Plug 'mason-org/mason.nvim'
+Plug 'mason-org/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
 
 -- LSP Lua
@@ -175,6 +177,32 @@ vim.keymap.set('n', '<leader>so', function()
   vim.cmd('source ' .. vim.env.MYVIMRC)
   print("Sourced")
 end, { desc = 'Source init.lua' })
+
+
+-- # Notify
+vim.notify = require("notify")
+
+-- Create an autocmd group for hot-reloading
+local nvim_reload_grp = vim.api.nvim_create_augroup("NvimReload", { clear = true })
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+  group = nvim_reload_grp,
+  -- Match any lua file saved anywhere to pass it to the callback
+  pattern = "*.lua",
+  callback = function(args)
+    -- Get the absolute path of the file that triggered the event
+    local filepath = vim.api.nvim_buf_get_name(args.buf)
+
+    -- Check if the path contains ".config/nvim/" anywhere
+    if filepath:match("%.config/nvim/") then
+      -- Source your main init.lua
+      vim.cmd("source " .. vim.env.MYVIMRC)
+
+      -- Notify user
+      vim.notify("Config reloaded", vim.log.levels.INFO, { title = "Neovim" })
+    end
+  end,
+})
 
 
 local function make_repeatable(key, action)
@@ -476,6 +504,35 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 vim.lsp.enable('lua_ls')
 
+require("mason-lspconfig").setup({
+  ensure_installed = {
+    "lua_ls",
+    "ts_ls",
+  },
+})
+
+local lspconfig = require("lspconfig")
+
+-- require("mason-lspconfig").setup_handlers({
+--   -- The first entry is the default handler for all installed servers
+--   function(server_name)
+--     lspconfig[server_name].setup({})
+--   end,
+--
+--   -- You can add targeted settings for ts_ls if needed
+--   ["ts_ls"] = function()
+--   end,
+-- })
+
+vim.lsp.config['ts_ls'] = {
+  init_options = {
+    preferences = {
+      -- Example configuration options
+      disableSuggestions = false,
+    },
+  },
+}
+
 -- --- Completion manager ---
 require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -639,8 +696,8 @@ end, { desc = 'Git amend and force-with-lease' })
 vim.keymap.set("n", "<leader>gpl", "<cmd>Git pull<CR>")
 
 vim.keymap.set("n", "<leader>gb", "<cmd>Git blame<CR>")
-vim.keymap.set("n", "<leader>gr", "<cmd>Gread<CR>")
-vim.keymap.set("n", "<leader>gw", "<cmd>Gwrite<CR>")
+vim.keymap.set("n", "<leader>gr", "<cmd>Gread<CR>")  -- git checkout .
+vim.keymap.set("n", "<leader>gw", "<cmd>Gwrite<CR>") -- git add %
 
 -- --- Git signs ---
 
